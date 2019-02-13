@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Gogoy</string>
+    <string name="done">Selesai</string>
+    <string name="dont_have_account">Belum memiliki akun?</string>
+    <string name="email">Email</string>
+    <string name="email_addr">Email Address</string>
+    <string name="fill_email">Masukkan Email</string>
+    <string name="fill_full_name">Masukkan Nama Lengkap</string>
+    <string name="fill_mobile_number">Masukkan Nomor handphone</string>
+    <string name="fill_paswd">Masukkan Kata sandi</string>
+    <string name="fill_paswd_new">Masukkan Kata sandi baru</string>
+    <string name="fill_paswd_repeat">Ulangi kata sandi</string>
+    <string name="full_name">Nama Lengkap</string>
+    <string name="forgot_paswd">Lupa password?</string>
+    <string name="login">Masuk</string>
+    <string name="mobile_number">Nomor handphone</string>
+    <string name="paswd">Password</string>
+    <string name="paswd_new">Password baru</string>
+    <string name="paswd_repeat">Ulangi password</string>
+    <string name="register">Register</string>
+    <string name="register_now">Daftar sekarang</string>
+    <string name="send">Kirim</string>
+</resources>
