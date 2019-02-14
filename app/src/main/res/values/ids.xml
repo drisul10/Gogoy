@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Frame Layout-->
+    <item name="fl_main_content" type="id"/>
+
+    <!--ImageView-->
+    <item name="iv_banner_badge" type="id"/>
+    <item name="iv_ctg_badge" type="id"/>
+    <item name="iv_item_badge" type="id"/>
+
+    <!--RecyclerView-->
+    <item name="rv_banner" type="id"/>
+    <item name="rv_best_seller" type="id"/>
+    <item name="rv_category" type="id"/>
+    <item name="rv_promo" type="id"/>
+
+    <!--TextView-->
+    <item name="tv_ctg_name" type="id"/>
+    <item name="tv_item_name" type="id"/>
+    <item name="tv_item_price" type="id"/>
+    <item name="tv_item_owner" type="id"/>
+</resources>
