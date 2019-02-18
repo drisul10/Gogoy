@@ -17,7 +17,7 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemUI().createView(AnkoContext.create(parent.context, parent)))
+        return ViewHolder(PartialUI().createView(AnkoContext.create(parent.context, parent)))
     }
 
     override fun getItemCount(): Int = list.size
@@ -34,7 +34,7 @@ class CategoryAdapter(
         var ivBadge: ImageView = view.find(R.id.iv_ctg_badge)
     }
 
-    private class ItemUI : AnkoComponent<ViewGroup> {
+    private class PartialUI : AnkoComponent<ViewGroup> {
         override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
             gridLayout {
                 isColumnOrderPreserved = false
@@ -44,7 +44,7 @@ class CategoryAdapter(
                     lparams(width = matchParent, height = dip(80))
                     gravity = Gravity.CENTER
                     isClickable = true
-                    backgroundResource = R.drawable.border_rounded_gray_nobg_norepeat_right
+                    backgroundResource = R.drawable.border_rounded_gray_nobg_noright
 
                     onClick {
                         //TODO: list sesuai kategori

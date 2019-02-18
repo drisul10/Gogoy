@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
 import com.gogoy.data.models.ItemModel
+import com.gogoy.utils.toRupiah
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -18,7 +19,7 @@ class BestSellerAdapter(
 ) : RecyclerView.Adapter<BestSellerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemUI().createView(AnkoContext.create(parent.context, parent)))
+        return ViewHolder(PartialUI().createView(AnkoContext.create(parent.context, parent)))
     }
 
     override fun getItemCount(): Int = list.size
@@ -27,19 +28,19 @@ class BestSellerAdapter(
         val item = list[position]
 
         holder.tvName.text = item.name
-        holder.tvPrice.text = item.price
+        holder.tvPrice.text = toRupiah(item.price.toDouble())
         holder.tvOwner.text = item.owner
         holder.ivBadge.setImageResource(item.badge)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var tvName : TextView = view.find(R.id.tv_item_name)
-        var tvPrice : TextView = view.find(R.id.tv_item_price)
-        var tvOwner : TextView = view.find(R.id.tv_item_owner)
-        var ivBadge : ImageView = view.find(R.id.iv_item_badge)
+        var tvName: TextView = view.find(R.id.tv_item_name)
+        var tvPrice: TextView = view.find(R.id.tv_item_price)
+        var tvOwner: TextView = view.find(R.id.tv_item_owner)
+        var ivBadge: ImageView = view.find(R.id.iv_item_badge)
     }
 
-    private class ItemUI : AnkoComponent<ViewGroup> {
+    private class PartialUI : AnkoComponent<ViewGroup> {
         override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
             linearLayout {
                 lparams(width = wrapContent, height = wrapContent)

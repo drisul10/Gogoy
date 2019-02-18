@@ -16,7 +16,7 @@ class BannerAdapter(
 ) : RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemUI().createView(AnkoContext.create(parent.context, parent)))
+        return ViewHolder(PartialUI().createView(AnkoContext.create(parent.context, parent)))
     }
 
     override fun getItemCount(): Int = list.size
@@ -28,10 +28,10 @@ class BannerAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var ivBadge : ImageView = view.find(R.id.iv_banner_badge)
+        var ivBadge: ImageView = view.find(R.id.iv_banner_badge)
     }
 
-    private class ItemUI : AnkoComponent<ViewGroup> {
+    private class PartialUI : AnkoComponent<ViewGroup> {
         override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
             linearLayout {
                 lparams(width = matchParent, height = wrapContent)

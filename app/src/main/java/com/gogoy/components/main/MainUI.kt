@@ -5,7 +5,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.support.v4.nestedScrollView
 
 class MainUI : AnkoComponent<MainActivity> {
-        override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
+    override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
         relativeLayout {
             lparams(width = matchParent, height = matchParent)
             backgroundColorResource = R.color.white
