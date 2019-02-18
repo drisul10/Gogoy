@@ -35,6 +35,14 @@
                 android:name=".components.auth.recovery.ResetPasswordActivity"
                 android:theme="@style/AppThemeNoActionBar"
         />
+        <activity
+                android:name=".components.cart.CartActivity"
+                android:theme="@style/AppThemeNoActionBar"
+        />
+        <activity
+                android:name=".components.account.AccountActivity"
+                android:theme="@style/AppThemeNoActionBar"
+        />
     </application>
 
 </manifest>
