@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Kang Gogoy</string>
+    <string name="account">Akun</string>
     <string name="best_seller">Terlaris</string>
     <string name="buy">Beli</string>
+    <string name="cart">Cart</string>
     <string name="category">Kategori</string>
+    <string name="checkout">Checkout</string>
     <string name="done">Selesai</string>
     <string name="dont_have_account">Belum memiliki akun?</string>
     <string name="email">Email</string>
@@ -25,6 +28,10 @@
     <string name="register">Register</string>
     <string name="register_now">Daftar sekarang</string>
     <string name="send">Kirim</string>
+    <string name="sign_min">-</string>
+    <string name="sign_plus">+</string>
     <string name="trucuk">Trucuk</string>
+    <string name="verified_account">Akun terverifikasi</string>
     <string name="view_all">Lihat semua</string>
+    <string name="dummy_people_name">Osas</string>
 </resources>

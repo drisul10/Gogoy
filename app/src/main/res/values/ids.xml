@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Button-->
+    <item name="bt_min" type="id"/>
+    <item name="bt_plus" type="id"/>
+
     <!--Frame Layout-->
     <item name="fl_main_content" type="id"/>
 
@@ -7,11 +11,17 @@
     <item name="iv_banner_badge" type="id"/>
     <item name="iv_ctg_badge" type="id"/>
     <item name="iv_item_badge" type="id"/>
+    <item name="iv_menu_badge" type="id"/>
+
+    <!--LinearLayout-->
+    <!--<item name="ll_btn_order" type="id"/>-->
 
     <!--RecyclerView-->
     <item name="rv_banner" type="id"/>
     <item name="rv_best_seller" type="id"/>
+    <item name="rv_cart_item" type="id"/>
     <item name="rv_category" type="id"/>
+    <item name="rv_menu_account" type="id"/>
     <item name="rv_promo" type="id"/>
 
     <!--TextView-->
@@ -19,4 +29,7 @@
     <item name="tv_item_name" type="id"/>
     <item name="tv_item_price" type="id"/>
     <item name="tv_item_owner" type="id"/>
+    <item name="tv_menu_name" type="id"/>
+    <item name="tv_total_bill" type="id"/>
+    <item name="tv_total_per_item" type="id"/>
 </resources>
