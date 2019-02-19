@@ -1,7 +1,6 @@
 package com.gogoy.components.cart
 
 import android.graphics.Typeface
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -20,9 +19,6 @@ class CartItemAdapter(
     private var list: ArrayList<ItemModel> = arrayListOf()
 ) : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
-    private var totalPerItem = arrayListOf(0, 0, 0)
-    private var totalBill: Int = 0
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(PartialUI().createView(AnkoContext.create(parent.context, parent)))
     }
@@ -38,21 +34,13 @@ class CartItemAdapter(
 
         holder.btMin.onClick {
             if ((holder.tvTotalPerItem.text).toString().toInt() > 1) {
-                totalPerItem[position] = ((holder.tvTotalPerItem.text).toString().toInt() - 1)
-                holder.tvTotalPerItem.text = totalPerItem[position].toString()
-                Log.d("TOTAL_PER_ITEM", totalPerItem.toString())
+                holder.tvTotalPerItem.text = ((holder.tvTotalPerItem.text).toString().toInt() - 1).toString()
             }
         }
 
         holder.btPlus.onClick {
-            totalPerItem[position] = ((holder.tvTotalPerItem.text).toString().toInt() + 1)
-            holder.tvTotalPerItem.text = totalPerItem[position].toString()
-            Log.d("TOTAL_PER_ITEM", totalPerItem.toString())
+            holder.tvTotalPerItem.text = ((holder.tvTotalPerItem.text).toString().toInt() + 1).toString()
         }
-
-        totalBill += item.price.toInt()
-
-        Log.d("TOTAL_BILL", totalBill.toString())
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -75,12 +63,9 @@ class CartItemAdapter(
                 linearLayout {
                     lparams(width = matchParent, height = wrapContent)
                     orientation = LinearLayout.HORIZONTAL
-                    weightSum = 3f
 
                     linearLayout {
-                        lparams(width = wrapContent, height = wrapContent) {
-                            weight = 2f
-                        }
+                        lparams(width = wrapContent, height = wrapContent)
 
                         //image
                         imageView {
@@ -113,10 +98,9 @@ class CartItemAdapter(
 
                     //button min and plus
                     linearLayout {
-                        lparams {
-                            weight = 1f
-                        }
+                        lparams(width = matchParent, height = wrapContent)
                         orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.END
 
                         button {
                             id = R.id.bt_min
