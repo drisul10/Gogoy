@@ -1,5 +1,6 @@
 package com.gogoy.components.cart
 
+import android.graphics.Color
 import android.widget.Toolbar
 import com.gogoy.R
 import org.jetbrains.anko.*
@@ -15,6 +16,8 @@ class CartUI : AnkoComponent<CartActivity> {
 
             toolbar = toolbar {
                 lparams(width = matchParent, height = wrapContent)
+                setTitleTextColor(Color.WHITE)
+                setSubtitleTextColor(Color.WHITE)
                 backgroundColorResource = R.color.colorPrimary
             }
 

@@ -1,5 +1,6 @@
 package com.gogoy.components.account
 
+import android.graphics.Color
 import android.widget.Toolbar
 import com.gogoy.R
 import org.jetbrains.anko.*
@@ -14,6 +15,8 @@ class AccountUI : AnkoComponent<AccountActivity> {
             backgroundColorResource = R.color.white
 
             toolbar = toolbar {
+                setTitleTextColor(Color.WHITE)
+                setSubtitleTextColor(Color.WHITE)
                 backgroundColorResource = R.color.colorPrimary
             }
 
