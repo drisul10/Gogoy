@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
+import com.gogoy.components.item.ItemActivity
 import com.gogoy.data.models.ItemModel
 import com.gogoy.utils.toRupiah
 import org.jetbrains.anko.*
@@ -56,8 +57,7 @@ class BestSellerAdapter(
                     backgroundResource = R.drawable.border_flat_gray_nobg
 
                     onClick {
-                        //TODO: detail
-                        toast("TODO: detail")
+                        startActivity<ItemActivity>()
                     }
 
                     //image

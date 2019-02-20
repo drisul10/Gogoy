@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
 import com.gogoy.data.models.BannerModel
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class BannerAdapter(
     private var list: ArrayList<BannerModel> = arrayListOf()
@@ -42,12 +41,6 @@ class BannerAdapter(
                     lparams(width = matchParent, height = dip(150))
 
                     orientation = LinearLayout.VERTICAL
-                    isClickable = true
-
-                    onClick {
-                        //TODO: detail
-                        toast("TODO: detail banner")
-                    }
 
                     //image banner
                     imageView {

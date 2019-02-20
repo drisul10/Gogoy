@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
+import com.gogoy.components.items.ItemsActivity
 import com.gogoy.data.models.CategoryModel
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -47,8 +48,7 @@ class CategoryAdapter(
                     backgroundResource = R.drawable.border_rounded_gray_nobg_noright
 
                     onClick {
-                        //TODO: list sesuai kategori
-                        toast("TODO: list sesuai kategori")
+                        startActivity<ItemsActivity>()
                     }
 
                     imageView {
