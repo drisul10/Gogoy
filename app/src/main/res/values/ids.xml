@@ -6,6 +6,7 @@
 
     <!--Frame Layout-->
     <item name="fl_main_content" type="id"/>
+    <item name="fl_tab_content" type="id"/>
 
     <!--ImageView-->
     <item name="iv_banner_badge" type="id"/>
@@ -21,8 +22,13 @@
     <item name="rv_best_seller" type="id"/>
     <item name="rv_cart_item" type="id"/>
     <item name="rv_category" type="id"/>
+    <item name="rv_item" type="id"/>
+    <item name="rv_item_related" type="id"/>
     <item name="rv_menu_account" type="id"/>
     <item name="rv_promo" type="id"/>
+
+    <!--TabLayout-->
+    <item name="tab_layout" type="id"/>
 
     <!--TextView-->
     <item name="tv_ctg_name" type="id"/>
@@ -32,4 +38,7 @@
     <item name="tv_menu_name" type="id"/>
     <item name="tv_total_bill" type="id"/>
     <item name="tv_total_per_item" type="id"/>
+
+    <!--ViewPager-->
+    <item name="vp_tab" type="id"/>
 </resources>
