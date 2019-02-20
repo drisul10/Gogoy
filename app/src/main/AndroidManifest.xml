@@ -21,28 +21,27 @@
         <activity android:name=".components.main.MainActivity"/>
         <activity
                 android:name=".components.auth.login.LoginActivity"
-                android:theme="@style/AppThemeNoActionBar"
-        />
+                android:theme="@style/AppThemeNoActionBar"/>
         <activity
                 android:name=".components.auth.register.RegisterActivity"
-                android:theme="@style/AppThemeNoActionBar"
-        />
+                android:theme="@style/AppThemeNoActionBar"/>
         <activity
                 android:name=".components.auth.recovery.SendEmailActivity"
-                android:theme="@style/AppThemeNoActionBar"
-        />
+                android:theme="@style/AppThemeNoActionBar"/>
         <activity
                 android:name=".components.auth.recovery.ResetPasswordActivity"
-                android:theme="@style/AppThemeNoActionBar"
-        />
+                android:theme="@style/AppThemeNoActionBar"/>
         <activity
                 android:name=".components.cart.CartActivity"
-                android:theme="@style/AppThemeNoActionBar"
-        />
+                android:theme="@style/AppThemeNoActionBar"/>
         <activity
                 android:name=".components.account.AccountActivity"
-                android:theme="@style/AppThemeNoActionBar"
-        />
+                android:theme="@style/AppThemeNoActionBar"/>
+        <activity
+                android:name=".components.item.ItemActivity"
+                android:theme="@style/AppThemeNoActionBar"/>
+        <activity
+                android:name=".components.items.ItemsActivity"
+                android:theme="@style/AppThemeNoActionBar"/>
     </application>
-
 </manifest>
