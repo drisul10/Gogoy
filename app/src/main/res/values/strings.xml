@@ -3,9 +3,14 @@
     <string name="account">Akun</string>
     <string name="best_seller">Terlaris</string>
     <string name="buy">Beli</string>
+    <string name="cancel">Batalkan</string>
     <string name="cart">Cart</string>
     <string name="category">Kategori</string>
     <string name="checkout">Checkout</string>
+    <string name="confirm">Konfirmasi</string>
+    <string name="confirm_dialog_start">Apakah yakin ingin menghapus</string>
+    <string name="confirm_dialog_end">dari keranjang</string>
+    <string name="del">Hapus</string>
     <string name="desc">Deskripsi</string>
     <string name="done">Selesai</string>
     <string name="dont_have_account">Belum memiliki akun?</string>
@@ -23,6 +28,7 @@
     <string name="login">Masuk</string>
     <string name="location_send">Lokasi pengiriman</string>
     <string name="mobile_number">Nomor handphone</string>
+    <string name="num_nil">0</string>
     <string name="paswd">Password</string>
     <string name="paswd_new">Password baru</string>
     <string name="paswd_repeat">Ulangi password</string>

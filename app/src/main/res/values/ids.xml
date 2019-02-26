@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--AlertBuilder-->
+    <item name="alert_dialog_del_item_cart" type="id"/>
+
     <!--Button-->
     <item name="bt_min" type="id"/>
     <item name="bt_plus" type="id"/>
@@ -15,7 +19,9 @@
     <item name="iv_menu_badge" type="id"/>
 
     <!--LinearLayout-->
-    <!--<item name="ll_btn_order" type="id"/>-->
+    <item name="ll_btn_buy" type="id"/>
+    <item name="ll_btn_min_plus" type="id"/>
+    <item name="ll_container" type="id"/>
 
     <!--RecyclerView-->
     <item name="rv_banner" type="id"/>
