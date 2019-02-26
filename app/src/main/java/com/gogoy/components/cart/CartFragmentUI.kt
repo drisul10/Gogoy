@@ -2,6 +2,7 @@ package com.gogoy.components.cart
 
 import android.graphics.Typeface
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
@@ -12,6 +13,7 @@ import org.jetbrains.anko.support.v4.nestedScrollView
 class CartFragmentUI<T> : AnkoComponent<T> {
 
     lateinit var rvCartItem: RecyclerView
+    lateinit var tvTotalBill: TextView
 
     override fun createView(ui: AnkoContext<T>) = with(ui) {
         relativeLayout {
@@ -42,7 +44,7 @@ class CartFragmentUI<T> : AnkoComponent<T> {
                 backgroundResource = R.drawable.border_rounded_gray_whitebg_toponly
                 weightSum = 2f
 
-                textView {
+                tvTotalBill = textView {
                     id = R.id.tv_total_bill
                     text = "Rp0 "
                     textSize = 20f

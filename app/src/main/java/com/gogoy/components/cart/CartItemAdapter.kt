@@ -1,6 +1,10 @@
 package com.gogoy.components.cart
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -8,16 +12,22 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
-import com.gogoy.data.models.ItemModel
+import com.gogoy.data.models.ItemCartModel
+import com.gogoy.utils.Prefs
 import com.gogoy.utils.toRupiah
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class CartItemAdapter(
-    private var list: ArrayList<ItemModel> = arrayListOf()
+    private var context: Context,
+    private var list: ArrayList<ItemCartModel> = arrayListOf(),
+    val listener: (Int) -> Unit
 ) : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
+
+    private var totalBill: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(PartialUI().createView(AnkoContext.create(parent.context, parent)))
@@ -25,21 +35,74 @@ class CartItemAdapter(
 
     override fun getItemCount(): Int = list.size
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+        val prefs = Prefs(context)
+        var listItem = prefs.getPref()
+        var indexListItem = 0
+
+        for ((j, i) in listItem.withIndex()) {
+            if (i.id == item.id) indexListItem = j
+        }
 
         holder.tvName.text = item.name
         holder.ivBadge.setImageResource(item.badge)
-        holder.tvPrice.text = toRupiah(item.price.toDouble())
+        holder.tvPrice.text = toRupiah(item.price)
+        holder.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
+
+        //set total bill and send to fragment
+        totalBill += item.price * listItem[indexListItem].totalPerItem
+        listener(totalBill)
 
         holder.btMin.onClick {
+            listItem = prefs.getPref()
+
             if ((holder.tvTotalPerItem.text).toString().toInt() > 1) {
+                listItem[indexListItem].totalPerItem -= 1
+                prefs.setPref(listItem)
+
+                //set state tvTotalPerItem
                 holder.tvTotalPerItem.text = ((holder.tvTotalPerItem.text).toString().toInt() - 1).toString()
+
+                //set total bill and send to fragment
+                totalBill -= item.price
+                listener(totalBill)
+            } else {
+                val alertDialog = AlertDialog.Builder(context)
+                alertDialog.setTitle(R.string.confirm)
+
+                val message: String = item.name
+                alertDialog.setMessage("Apakah yakin menghapus item $message dari keranjang?")
+                alertDialog.setPositiveButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
+                alertDialog.setNegativeButton(R.string.del) { _, _ ->
+                    listItem.removeIf { s -> s.id == item.id }
+                    prefs.setPref(listItem)
+
+                    //just for refresh recyclerView
+                    val activity = context as Activity
+                    activity.startActivity(context.intentFor<CartActivity>().clearTask().newTask())
+                    activity.overridePendingTransition(R.anim.blink, R.anim.blink)
+                }
+
+                //create and show dialog
+                val dialog = alertDialog.create()
+                dialog.show()
             }
         }
 
         holder.btPlus.onClick {
-            holder.tvTotalPerItem.text = ((holder.tvTotalPerItem.text).toString().toInt() + 1).toString()
+            listItem = prefs.getPref()
+
+            listItem[indexListItem].totalPerItem += 1
+            prefs.setPref(listItem)
+
+            //set state tvTotalPerItem
+            holder.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
+
+            //set total bill and send to fragment
+            totalBill += item.price
+            listener(totalBill)
         }
     }
 
@@ -53,15 +116,17 @@ class CartItemAdapter(
     }
 
     private class PartialUI : AnkoComponent<ViewGroup> {
+
         override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
             linearLayout {
-                lparams(width = matchParent, height = wrapContent) {
-                    verticalMargin = dip(10)
-                }
+                lparams(width = matchParent, height = wrapContent)
 
                 //container
                 linearLayout {
-                    lparams(width = matchParent, height = wrapContent)
+                    lparams(width = matchParent, height = wrapContent) {
+                        verticalMargin = dip(10)
+                    }
+                    id = R.id.ll_container
                     orientation = LinearLayout.HORIZONTAL
 
                     linearLayout {
@@ -113,7 +178,6 @@ class CartItemAdapter(
 
                         textView {
                             id = R.id.tv_total_per_item
-                            text = "1"
                             textSize = 22f
                             textColorResource = R.color.colorText
                         }.lparams {

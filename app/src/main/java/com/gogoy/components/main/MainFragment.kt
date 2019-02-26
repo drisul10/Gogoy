@@ -43,13 +43,21 @@ class MainFragment : Fragment(), MainContract.View {
 
     override fun showPromo() {
         //TODO: real data from API
-        promoAdapter = PromoAdapter(ArrayListPromo_Dummy.list)
+        promoAdapter = PromoAdapter(requireContext(), ArrayListPromo_Dummy.list) {
+            //update state menu cart in main activity
+            activity!!.invalidateOptionsMenu()
+        }
+
         ui.rvPromo.adapter = promoAdapter
     }
 
     override fun showBestSeller() {
         //TODO: real data from API
-        bestSellerAdapter = BestSellerAdapter(ArrayListBestSeller_Dummy.list)
+        bestSellerAdapter = BestSellerAdapter(requireContext(), ArrayListBestSeller_Dummy.list) {
+            //update state menu cart in main activity
+            activity!!.invalidateOptionsMenu()
+        }
+
         ui.rvBestSeller.adapter = bestSellerAdapter
     }
 

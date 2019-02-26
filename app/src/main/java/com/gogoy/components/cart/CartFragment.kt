@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.gogoy.data.collections.ArrayListItem_Dummy
+import com.gogoy.utils.Prefs
+import com.gogoy.utils.toRupiah
 import org.jetbrains.anko.AnkoContext
 
 class CartFragment : Fragment(), CartContract.View {
@@ -25,8 +26,14 @@ class CartFragment : Fragment(), CartContract.View {
     }
 
     override fun showItem() {
-        cartItemAdapter = CartItemAdapter(ArrayListItem_Dummy.list)
+        val prefs = Prefs(requireContext())
+
+        cartItemAdapter = CartItemAdapter(requireContext(), prefs.getPref()) { totalBill ->
+            ui.tvTotalBill.text = toRupiah(totalBill)
+        }
+
         ui.rvCartItem.adapter = cartItemAdapter
+        cartItemAdapter.notifyDataSetChanged()
     }
 
     companion object {

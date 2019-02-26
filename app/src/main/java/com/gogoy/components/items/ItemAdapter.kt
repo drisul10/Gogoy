@@ -34,7 +34,7 @@ class ItemAdapter(
         val item = list[position]
 
         holder.tvName.text = item.name
-        holder.tvPrice.text = toRupiah(item.price.toDouble())
+        holder.tvPrice.text = toRupiah(item.price)
         holder.tvOwner.text = item.owner
         holder.ivBadge.setImageResource(item.badge)
     }

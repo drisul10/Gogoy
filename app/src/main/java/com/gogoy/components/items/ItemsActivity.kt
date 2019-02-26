@@ -33,6 +33,7 @@ class ItemsActivity : AppCompatActivity() {
         setActionBar(ui.toolbar)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setDisplayShowHomeEnabled(true)
+        actionBar?.title = "Promo"
 
         ui.toolbar.setNavigationOnClickListener {
             onBackPressed()

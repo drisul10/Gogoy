@@ -183,6 +183,11 @@ class MainFragmentUI<T> : AnkoComponent<T> {
                     layoutManager = LinearLayoutManager(ctx, LinearLayout.HORIZONTAL, false)
                 }
             }
+
+            //only pusher
+            view {}.lparams {
+                margin = dip(20)
+            }
         }
     }
 }
