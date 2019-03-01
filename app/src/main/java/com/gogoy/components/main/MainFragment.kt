@@ -37,7 +37,7 @@ class MainFragment : Fragment(), MainContract.View {
     }
 
     override fun showCategory() {
-        categoryAdapter = CategoryAdapter(ArrayListCategory.list)
+        categoryAdapter = CategoryAdapter(requireContext(), ArrayListCategory.list)
         ui.rvCategory.adapter = categoryAdapter
     }
 

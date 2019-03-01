@@ -1,4 +1,4 @@
-package com.gogoy.components.items
+package com.gogoy.components.bengkel
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +10,10 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.setContentView
 
-class ItemsActivity : AppCompatActivity() {
+class BengkelActivity : AppCompatActivity() {
 
-    private lateinit var itemsPresenter: ItemsPresenter
-    val ui = ItemsUI()
+    private lateinit var bengkelPresenter: BengkelPresenter
+    val ui = BengkelUI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +29,11 @@ class ItemsActivity : AppCompatActivity() {
         setToolbar(nameCategory)
 
         //set default fragment
-        val itemsFragment = supportFragmentManager
-            .findFragmentById(R.id.fl_main_content) as ItemsFragment? ?: ItemsFragment.newInstance().also {
+        val bengkelFragment = supportFragmentManager
+            .findFragmentById(R.id.fl_main_content) as BengkelFragment? ?: BengkelFragment.newInstance().also {
             replaceFragmentInActivity(it, R.id.fl_main_content)
         }
-        itemsPresenter = ItemsPresenter(itemsFragment)
+        bengkelPresenter = BengkelPresenter(bengkelFragment)
     }
 
     //on press back

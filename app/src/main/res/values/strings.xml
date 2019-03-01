@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Kang Gogoy</string>
     <string name="account">Akun</string>
+    <string name="activate">Aktifkan</string>
     <string name="best_seller">Terlaris</string>
     <string name="buy">Beli</string>
     <string name="cancel">Batalkan</string>
@@ -22,8 +23,15 @@
     <string name="fill_paswd">Masukkan Kata sandi</string>
     <string name="fill_paswd_new">Masukkan Kata sandi baru</string>
     <string name="fill_paswd_repeat">Ulangi kata sandi</string>
+    <string name="find_bengkel">Cari bengkel terdekat</string>
+    <string name="find_bengkel_location">Cari lokasi bengkel</string>
     <string name="full_name">Nama Lengkap</string>
     <string name="forgot_paswd">Lupa password?</string>
+    <string name="google_maps_key">AIzaSyCyMOWKVukxQvutlZ3TOtf-6o-5SAVBPxY</string>
+    <string name="gps_disabled">Lokasi tidak aktif</string>
+    <string name="gps_enabled_message">Aplikasi membutuhkan lokasi device. Silahkan aktifkan pengaturan lokasi terlebih
+        dahulu untuk melanjutkan
+    </string>
     <string name="info">Informasi</string>
     <string name="login">Masuk</string>
     <string name="location_send">Lokasi pengiriman</string>

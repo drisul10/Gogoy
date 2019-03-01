@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gogoy.R
 import com.gogoy.components.main.MainActivity
 import com.gogoy.utils.replaceFragmentInActivity
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.setContentView
-import org.jetbrains.anko.startActivity
 
 class AccountActivity : AppCompatActivity() {
 
@@ -32,10 +34,8 @@ class AccountActivity : AppCompatActivity() {
 
     //on press back
     override fun onBackPressed() {
-        super.onBackPressed()
-        startActivity<MainActivity>()
+        startActivity(intentFor<MainActivity>().clearTask().newTask())
         overridePendingTransition(R.anim.left_in, R.anim.right_out)
-        finish()
     }
 
     //set actionbar

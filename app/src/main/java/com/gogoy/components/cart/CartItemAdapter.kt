@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -81,7 +82,7 @@ class CartItemAdapter(
 
                     //just for refresh recyclerView
                     val activity = context as Activity
-                    activity.startActivity(context.intentFor<CartActivity>().clearTask().newTask())
+                    activity.startActivity(context.intentFor<CartActivity>("ACTIVITY_ORIGIN" to "MAIN").clearTask().newTask())
                     activity.overridePendingTransition(R.anim.blink, R.anim.blink)
                 }
 
@@ -149,13 +150,19 @@ class CartItemAdapter(
                             textView {
                                 id = R.id.tv_item_name
                                 textSize = 16f
-                                textColorResource = R.color.colorPrimary
                                 typeface = Typeface.DEFAULT_BOLD
+                                maxWidth = dip(160)
+                                maxLines = 1
+                                ellipsize = TextUtils.TruncateAt.END
+                                textColorResource = R.color.colorPrimary
                             }
 
                             textView {
                                 id = R.id.tv_item_price
                                 textSize = 16f
+                                maxWidth = dip(160)
+                                maxLines = 1
+                                ellipsize = TextUtils.TruncateAt.END
                                 textColorResource = R.color.colorText
                             }
                         }
@@ -171,6 +178,7 @@ class CartItemAdapter(
                             id = R.id.bt_min
                             textResource = R.string.sign_min
                             textSize = 20f
+                            textColorResource = R.color.white
                             padding = 0
                             gravity = Gravity.CENTER
                             backgroundColorResource = R.color.colorPrimary
@@ -179,7 +187,8 @@ class CartItemAdapter(
                         textView {
                             id = R.id.tv_total_per_item
                             textSize = 22f
-                            textColorResource = R.color.colorText
+                            typeface = Typeface.DEFAULT_BOLD
+                            textColorResource = R.color.colorPrimary
                         }.lparams {
                             horizontalMargin = dip(10)
                         }
@@ -188,6 +197,7 @@ class CartItemAdapter(
                             id = R.id.bt_plus
                             textResource = R.string.sign_plus
                             textSize = 20f
+                            textColorResource = R.color.white
                             padding = 0
                             gravity = Gravity.CENTER
                             backgroundColorResource = R.color.colorPrimary

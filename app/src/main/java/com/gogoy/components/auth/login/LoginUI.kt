@@ -3,15 +3,17 @@ package com.gogoy.components.auth.login
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
+import android.widget.Button
 import android.widget.LinearLayout
 import com.gogoy.R
 import com.gogoy.components.auth.recovery.SendEmailActivity
 import com.gogoy.components.auth.register.RegisterActivity
-import com.gogoy.components.main.MainActivity
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class LoginUI : AnkoComponent<LoginActivity> {
+
+    lateinit var btnLogin: Button
 
     override fun createView(ui: AnkoContext<LoginActivity>) = with(ui) {
         linearLayout {
@@ -109,15 +111,10 @@ class LoginUI : AnkoComponent<LoginActivity> {
                 }
 
                 //button submit
-                button {
+                btnLogin = button {
                     textResource = R.string.login
                     textColorResource = R.color.white
                     backgroundResource = R.drawable.border_color_primary
-
-                    onClick {
-                        //TODO: autentikasi dari API
-                        startActivity<MainActivity>()
-                    }
                 }.lparams(width = matchParent, height = wrapContent)
 
                 //text register clickable

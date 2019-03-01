@@ -14,6 +14,7 @@ class CartFragmentUI<T> : AnkoComponent<T> {
 
     lateinit var rvCartItem: RecyclerView
     lateinit var tvTotalBill: TextView
+    lateinit var llCheckOut: LinearLayout
 
     override fun createView(ui: AnkoContext<T>) = with(ui) {
         relativeLayout {
@@ -38,15 +39,15 @@ class CartFragmentUI<T> : AnkoComponent<T> {
                 }
             }
 
-            linearLayout {
+            llCheckOut = linearLayout {
                 orientation = LinearLayout.HORIZONTAL
                 verticalPadding = dip(5)
+                elevation = 10f
                 backgroundResource = R.drawable.border_rounded_gray_whitebg_toponly
                 weightSum = 2f
 
                 tvTotalBill = textView {
                     id = R.id.tv_total_bill
-                    text = "Rp0 "
                     textSize = 20f
                     textColorResource = R.color.colorPrimary
                     typeface = Typeface.DEFAULT_BOLD

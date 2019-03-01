@@ -12,7 +12,6 @@ import com.gogoy.R
 import com.gogoy.data.models.ItemModel
 import com.gogoy.utils.toRupiah
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class ItemRelatedAdapter(
     private var list: ArrayList<ItemModel> = arrayListOf()
@@ -54,10 +53,6 @@ class ItemRelatedAdapter(
                     orientation = LinearLayout.VERTICAL
                     isClickable = true
                     backgroundResource = R.drawable.border_flat_gray_nobg
-
-                    onClick {
-                        startActivity<ItemActivity>()
-                    }
 
                     //image
                     imageView {
@@ -111,11 +106,6 @@ class ItemRelatedAdapter(
                         verticalPadding = dip(5)
                         isClickable = true
                         backgroundColorResource = R.color.colorPrimary
-
-                        onClick {
-                            //TODO: action beli
-                            toast("TODO: action beli")
-                        }
 
                         imageView {
                             imageResource = R.drawable.ic_shopping_cart_white_24dp

@@ -88,7 +88,7 @@ class MainFragmentUI<T> : AnkoComponent<T> {
                 rvCategory = recyclerView {
                     lparams(width = matchParent, height = wrapContent)
                     id = R.id.rv_category
-                    layoutManager = GridLayoutManager(ctx, 4)
+                    layoutManager = GridLayoutManager(ctx, 3)
                 }
             }
 

@@ -60,7 +60,7 @@ class ItemAdapter(
                     }
                     orientation = LinearLayout.VERTICAL
                     isClickable = true
-                    backgroundResource = R.drawable.border_shadow_whitebg
+                    backgroundResource = R.drawable.border_rounded_shadow_whitebg
 
                     onClick {
                         startActivity<ItemActivity>()

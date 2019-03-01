@@ -3,10 +3,13 @@ package com.gogoy.components.cart
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gogoy.R
+import com.gogoy.components.item.ItemActivity
 import com.gogoy.components.main.MainActivity
 import com.gogoy.utils.replaceFragmentInActivity
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.setContentView
-import org.jetbrains.anko.startActivity
 
 class CartActivity : AppCompatActivity() {
 
@@ -32,18 +35,39 @@ class CartActivity : AppCompatActivity() {
 
     //on press back
     override fun onBackPressed() {
-        super.onBackPressed()
-        startActivity<MainActivity>()
+        val activityOrigin: String = intent.getStringExtra("ACTIVITY_ORIGIN")
+
+        when (activityOrigin) {
+            "MAIN" -> startActivity(intentFor<MainActivity>("ACTIVITY_ORIGIN" to "CART").clearTask().newTask())
+            "ITEM" -> {
+                val itemId: String = intent.getStringExtra("ID")
+                val itemName: String = intent.getStringExtra("NAME")
+                val itemPrice: Int = intent.getIntExtra("PRICE", 0)
+                val itemOwner: String = intent.getStringExtra("OWNER")
+                val itemBadge: Int = intent.getIntExtra("BADGE", 0)
+
+                startActivity(
+                    intentFor<ItemActivity>(
+                        "ACTIVITY_ORIGIN" to "CART",
+                        "ID" to itemId,
+                        "NAME" to itemName,
+                        "PRICE" to itemPrice,
+                        "OWNER" to itemOwner,
+                        "BADGE" to itemBadge
+                    ).clearTask().newTask()
+                )
+            }
+        }
+
         overridePendingTransition(R.anim.left_in, R.anim.right_out)
-        finish()
     }
 
     //set actionbar
     private fun setToolbar() {
-        setActionBar(ui.toolbar)
-        actionBar?.title = resources.getString(R.string.cart)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setDisplayShowHomeEnabled(true)
+        setSupportActionBar(ui.toolbar)
+        supportActionBar?.title = resources.getString(R.string.cart)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         ui.toolbar.setNavigationOnClickListener {
             onBackPressed()

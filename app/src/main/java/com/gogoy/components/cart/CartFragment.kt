@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.gogoy.utils.Prefs
+import com.gogoy.utils.invisible
 import com.gogoy.utils.toRupiah
+import com.gogoy.utils.visible
 import org.jetbrains.anko.AnkoContext
 
 class CartFragment : Fragment(), CartContract.View {
@@ -30,6 +32,12 @@ class CartFragment : Fragment(), CartContract.View {
 
         cartItemAdapter = CartItemAdapter(requireContext(), prefs.getPref()) { totalBill ->
             ui.tvTotalBill.text = toRupiah(totalBill)
+        }
+
+        if (prefs.getPref().size == 0) {
+            ui.llCheckOut.invisible()
+        } else {
+            ui.llCheckOut.visible()
         }
 
         ui.rvCartItem.adapter = cartItemAdapter

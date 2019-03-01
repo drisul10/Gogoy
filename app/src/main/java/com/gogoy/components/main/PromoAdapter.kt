@@ -1,8 +1,10 @@
 package com.gogoy.components.main
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +21,10 @@ import com.gogoy.utils.Prefs
 import com.gogoy.utils.invisible
 import com.gogoy.utils.toRupiah
 import com.gogoy.utils.visible
+import kotlinx.coroutines.delay
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
 class PromoAdapter(
     private var context: Context,
@@ -29,7 +33,7 @@ class PromoAdapter(
 ) : RecyclerView.Adapter<PromoAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemUI().createView(AnkoContext.create(parent.context, parent)))
+        return ViewHolder(PartialUI().createView(AnkoContext.create(parent.context, parent)))
     }
 
     override fun getItemCount(): Int = list.size
@@ -37,6 +41,42 @@ class PromoAdapter(
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+
+        holder.parent.onClick {
+            val activity = context as Activity
+
+            activity.startActivity<ItemActivity>(
+                "ACTIVITY_ORIGIN" to "MAIN",
+                "ID" to item.id,
+                "NAME" to item.name,
+                "OWNER" to item.owner,
+                "PRICE" to item.price,
+                "BADGE" to item.badge
+            )
+            activity.overridePendingTransition(R.anim.right_in, R.anim.left_out)
+
+            holder.parent.backgroundResource = R.drawable.border_rounded_shadow_graybg
+            delay(150)
+            holder.parent.backgroundResource = R.drawable.border_rounded_shadow_whitebg
+        }
+
+        holder.parent.onLongClick {
+            val activity = context as Activity
+
+            activity.startActivity<ItemActivity>(
+                "ACTIVITY_ORIGIN" to "MAIN",
+                "ID" to item.id,
+                "NAME" to item.name,
+                "OWNER" to item.owner,
+                "PRICE" to item.price,
+                "BADGE" to item.badge
+            )
+            activity.overridePendingTransition(R.anim.right_in, R.anim.left_out)
+
+            holder.parent.backgroundResource = R.drawable.border_rounded_shadow_graybg
+            delay(50)
+            holder.parent.backgroundResource = R.drawable.border_rounded_shadow_whitebg
+        }
 
         holder.tvName.text = item.name
         holder.tvPrice.text = toRupiah(item.price)
@@ -65,6 +105,11 @@ class PromoAdapter(
         }
 
         holder.llBtnBuy.onClick {
+
+            holder.llBtnBuy.backgroundColorResource = R.color.colorPrimaryDark
+            delay(50)
+            holder.llBtnBuy.backgroundColorResource = R.color.colorPrimary
+
             //keep listItem up to date
             listItem = prefs.getPref()
             totalPerItem = 1
@@ -85,6 +130,11 @@ class PromoAdapter(
         }
 
         holder.btMin.onClick {
+
+            holder.btMin.backgroundColorResource = R.color.colorPrimaryDark
+            delay(30)
+            holder.btMin.backgroundColorResource = R.color.colorPrimary
+
             //keep listItem up to date
             listItem = prefs.getPref()
 
@@ -114,6 +164,11 @@ class PromoAdapter(
         }
 
         holder.btPlus.onClick {
+
+            holder.btPlus.backgroundColorResource = R.color.colorPrimaryDark
+            delay(30)
+            holder.btPlus.backgroundColorResource = R.color.colorPrimary
+
             //keep listItem up to date
             listItem = prefs.getPref()
 
@@ -147,9 +202,10 @@ class PromoAdapter(
         var tvTotalPerItem: TextView = view.find(R.id.tv_total_per_item)
         var btMin: Button = view.find(R.id.bt_min)
         var btPlus: Button = view.find(R.id.bt_plus)
+        val parent: LinearLayout = view.find(R.id.parent)
     }
 
-    private class ItemUI : AnkoComponent<ViewGroup> {
+    private class PartialUI : AnkoComponent<ViewGroup> {
         override fun createView(ui: AnkoContext<ViewGroup>) = with(ui) {
             linearLayout {
                 lparams(width = wrapContent, height = wrapContent)
@@ -157,29 +213,27 @@ class PromoAdapter(
 
                 //container
                 linearLayout {
-                    lparams(width = dip(140), height = dip(173)) {
+                    lparams(width = dip(150), height = wrapContent) {
                         horizontalMargin = dip(5)
                     }
+                    id = R.id.parent
                     orientation = LinearLayout.VERTICAL
                     isClickable = true
-                    backgroundResource = R.drawable.border_flat_gray_nobg
-
-                    onClick {
-                        startActivity<ItemActivity>()
-                    }
+                    backgroundResource = R.drawable.border_rounded_shadow_whitebg
 
                     //image
                     imageView {
                         id = R.id.iv_item_badge
                         scaleType = ImageView.ScaleType.CENTER_CROP
-                    }.lparams(width = matchParent, height = dip(70)) {
+                    }.lparams(width = dip(130), height = dip(90)) {
                         gravity = Gravity.CENTER_HORIZONTAL
+                        margin = dip(10)
                     }
 
                     //text name, owner and price
                     verticalLayout {
                         lparams {
-                            marginStart = dip(5)
+                            horizontalMargin = dip(10)
                         }
 
                         textView {
@@ -187,6 +241,9 @@ class PromoAdapter(
                             gravity = Gravity.START
                             textSize = 16f
                             typeface = Typeface.DEFAULT_BOLD
+                            maxWidth = dip(130)
+                            maxLines = 1
+                            ellipsize = TextUtils.TruncateAt.END
                             textColorResource = R.color.colorPrimary
                         }.lparams {
                             verticalMargin = dip(2.5f)
@@ -196,9 +253,10 @@ class PromoAdapter(
                             id = R.id.tv_item_owner
                             gravity = Gravity.START
                             textSize = 11f
+                            maxWidth = dip(130)
+                            maxLines = 1
+                            ellipsize = TextUtils.TruncateAt.END
                             textColorResource = R.color.colorText
-                        }.lparams {
-                            verticalMargin = dip(2.5f)
                         }
 
                         textView {
@@ -206,6 +264,9 @@ class PromoAdapter(
                             gravity = Gravity.START
                             textSize = 16f
                             typeface = Typeface.DEFAULT_BOLD
+                            maxWidth = dip(130)
+                            maxLines = 1
+                            ellipsize = TextUtils.TruncateAt.END
                             textColorResource = R.color.colorText
                         }.lparams {
                             verticalMargin = dip(2.5f)
@@ -214,7 +275,9 @@ class PromoAdapter(
 
                     //container action buy & button min and plus
                     relativeLayout {
-                        lparams(width = matchParent, height = wrapContent)
+                        lparams(width = matchParent, height = wrapContent) {
+                            margin = dip(10)
+                        }
                         isClickable = true
 
                         //action buy
@@ -254,12 +317,13 @@ class PromoAdapter(
                                 padding = 0
                                 gravity = Gravity.CENTER
                                 backgroundColorResource = R.color.colorPrimary
-                            }.lparams(width = dip(20), height = dip(20))
+                            }.lparams(width = dip(25), height = dip(25))
 
                             textView {
                                 id = R.id.tv_total_per_item
-                                textSize = 18f
-                                textColorResource = R.color.colorText
+                                textSize = 22f
+                                typeface = Typeface.DEFAULT_BOLD
+                                textColorResource = R.color.colorPrimary
                             }.lparams {
                                 horizontalMargin = dip(10)
                             }
@@ -272,7 +336,7 @@ class PromoAdapter(
                                 padding = 0
                                 gravity = Gravity.CENTER
                                 backgroundColorResource = R.color.colorPrimary
-                            }.lparams(width = dip(20), height = dip(20))
+                            }.lparams(width = dip(25), height = dip(25))
                         }.invisible()
                     }
                 }

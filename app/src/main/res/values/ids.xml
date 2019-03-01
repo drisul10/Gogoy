@@ -33,6 +33,9 @@
     <item name="rv_menu_account" type="id"/>
     <item name="rv_promo" type="id"/>
 
+    <!--RelativeLayout-->
+    <item name="rl_wrapper_badge" type="id"/>
+
     <!--TabLayout-->
     <item name="tab_layout" type="id"/>
 

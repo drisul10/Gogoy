@@ -1,23 +1,21 @@
-package com.gogoy.components.cart
+package com.gogoy.components.bengkel
 
 import android.graphics.Color
-import androidx.appcompat.widget.Toolbar
+import android.widget.Toolbar
 import com.gogoy.R
 import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.themedToolbar
 
-class CartUI : AnkoComponent<CartActivity> {
+class BengkelUI : AnkoComponent<BengkelActivity> {
 
     lateinit var toolbar: Toolbar
 
-    override fun createView(ui: AnkoContext<CartActivity>) = with(ui) {
+    override fun createView(ui: AnkoContext<BengkelActivity>) = with(ui) {
         verticalLayout {
             lparams(width = matchParent, height = matchParent)
             backgroundColorResource = R.color.white
 
-            toolbar = themedToolbar {
+            toolbar = toolbar {
                 lparams(width = matchParent, height = wrapContent)
-                elevation = 5f
                 setTitleTextColor(Color.WHITE)
                 setSubtitleTextColor(Color.WHITE)
                 backgroundColorResource = R.color.colorPrimary
