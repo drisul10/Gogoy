@@ -8,6 +8,13 @@
     <item name="bt_min" type="id"/>
     <item name="bt_plus" type="id"/>
 
+    <!--EditText-->
+    <item name="et_display_name" type="id"/>
+    <item name="et_email" type="id"/>
+    <item name="et_password" type="id"/>
+    <item name="et_password_confirm" type="id"/>
+    <item name="et_phone" type="id"/>
+
     <!--Frame Layout-->
     <item name="fl_main_content" type="id"/>
     <item name="fl_tab_content" type="id"/>

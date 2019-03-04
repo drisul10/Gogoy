@@ -17,6 +17,8 @@
     <string name="dont_have_account">Belum memiliki akun?</string>
     <string name="email">Email</string>
     <string name="email_addr">Email Address</string>
+    <string name="exit">Keluar</string>
+    <string name="exit_message">Apakah yakin ingin keluar dari aplikasi?</string>
     <string name="fill_email">Masukkan Email</string>
     <string name="fill_full_name">Masukkan Nama Lengkap</string>
     <string name="fill_mobile_number">Masukkan Nomor handphone</string>
