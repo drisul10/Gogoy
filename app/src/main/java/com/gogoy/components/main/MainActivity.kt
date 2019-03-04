@@ -25,7 +25,6 @@ import com.gogoy.utils.visible
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.setContentView
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -87,7 +86,17 @@ class MainActivity : AppCompatActivity() {
 
     //on press back
     override fun onBackPressed() {
-        toast("TODO: apakah yakin keluar dari aplikasi?")
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle(R.string.exit)
+        alertDialog.setMessage(R.string.exit_message)
+        alertDialog.setPositiveButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
+        alertDialog.setNegativeButton(R.string.exit) { _, _ ->
+            ActivityCompat.finishAffinity(this)
+        }
+
+        //create and show dialog
+        val dialog = alertDialog.create()
+        dialog.show()
     }
 
     override fun onResume() {

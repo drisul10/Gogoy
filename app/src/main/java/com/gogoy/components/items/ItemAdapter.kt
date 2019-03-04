@@ -10,11 +10,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
-import com.gogoy.components.item.ItemActivity
 import com.gogoy.data.models.ItemModel
 import com.gogoy.utils.toRupiah
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class ItemAdapter(
     private var list: ArrayList<ItemModel> = arrayListOf()
@@ -54,25 +52,28 @@ class ItemAdapter(
 
                 //container
                 linearLayout {
-                    lparams(width = matchParent, height = dip(222)) {
+                    lparams(width = matchParent, height = wrapContent) {
                         horizontalMargin = dip(5)
-                        verticalMargin = dip(5)
+                        verticalMargin = dip(10)
                     }
                     orientation = LinearLayout.VERTICAL
+                    elevation = 10f
                     isClickable = true
-                    backgroundResource = R.drawable.border_rounded_shadow_whitebg
-
-                    onClick {
-                        startActivity<ItemActivity>()
-                    }
+                    backgroundResource = R.drawable.border_flat_gray_whitebg
 
                     //image
                     imageView {
                         id = R.id.iv_item_badge
+                        cropToPadding = true
+                        backgroundResource = R.drawable.border_flat_gray_whitebg
                         scaleType = ImageView.ScaleType.CENTER_CROP
-                    }.lparams(width = matchParent, height = dip(120)) {
+                    }.lparams(width = matchParent, height = dip(150)) {
                         gravity = Gravity.CENTER_HORIZONTAL
                     }
+
+                    view {
+                        backgroundColorResource = R.color.colorPrimaryDark
+                    }.lparams(width = matchParent, height = dip(2))
 
                     //text name, owner and price
                     verticalLayout {
@@ -95,8 +96,6 @@ class ItemAdapter(
                             gravity = Gravity.START
                             textSize = 11f
                             textColorResource = R.color.colorText
-                        }.lparams {
-                            verticalMargin = dip(2.5f)
                         }
 
                         textView {
@@ -110,30 +109,32 @@ class ItemAdapter(
                         }
                     }
 
-                    //action buy
-                    linearLayout {
-                        lparams(width = matchParent, height = wrapContent)
-                        orientation = LinearLayout.HORIZONTAL
-                        gravity = Gravity.CENTER
-                        verticalPadding = dip(5)
-                        isClickable = true
-                        backgroundColorResource = R.color.colorPrimary
-
-                        onClick {
-                            //TODO: action beli
-                            toast("TODO: action beli")
+                    relativeLayout {
+                        lparams(width = matchParent, height = wrapContent) {
+                            horizontalMargin = dip(30)
+                            verticalMargin = dip(10)
                         }
 
-                        imageView {
-                            imageResource = R.drawable.ic_shopping_cart_white_24dp
-                        }.lparams(width = dip(20), height = dip(20)) {
-                            horizontalMargin = dip(5)
-                        }
+                        //action buy
+                        linearLayout {
+                            lparams(width = matchParent, height = wrapContent)
+                            id = R.id.ll_btn_buy
+                            orientation = LinearLayout.HORIZONTAL
+                            gravity = Gravity.CENTER
+                            verticalPadding = dip(5)
+                            backgroundColorResource = R.color.colorPrimary
 
-                        textView {
-                            textSize = 12f
-                            textColorResource = R.color.white
-                            textResource = R.string.buy
+                            imageView {
+                                imageResource = R.drawable.ic_shopping_cart_white_24dp
+                            }.lparams(width = dip(20), height = dip(20)) {
+                                horizontalMargin = dip(5)
+                            }
+
+                            textView {
+                                textSize = 12f
+                                textColorResource = R.color.white
+                                textResource = R.string.buy
+                            }
                         }
                     }
                 }

@@ -138,6 +138,13 @@ class PromoAdapter(
             //keep listItem up to date
             listItem = prefs.getPref()
 
+            for ((j, i) in listItem.withIndex()) {
+                if (i.id == item.id) {
+                    totalPerItem = i.totalPerItem
+                    indexListItem = j
+                }
+            }
+
             if ((holder.tvTotalPerItem.text).toString().toInt() > 1) {
                 listItem[indexListItem].totalPerItem -= 1
                 prefs.setPref(listItem)

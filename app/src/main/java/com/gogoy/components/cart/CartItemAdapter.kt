@@ -73,8 +73,7 @@ class CartItemAdapter(
                 val alertDialog = AlertDialog.Builder(context)
                 alertDialog.setTitle(R.string.confirm)
 
-                val message: String = item.name
-                alertDialog.setMessage("Apakah yakin menghapus item $message dari keranjang?")
+                alertDialog.setMessage("Apakah yakin menghapus item ${item.name} dari keranjang?")
                 alertDialog.setPositiveButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
                 alertDialog.setNegativeButton(R.string.del) { _, _ ->
                     listItem.removeIf { s -> s.id == item.id }
