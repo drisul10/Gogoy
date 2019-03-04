@@ -49,6 +49,9 @@ dependencies {
     //gSon
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //volley
+    implementation 'com.android.volley:volley:1.1.1'
+
     //testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'

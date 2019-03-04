@@ -3,13 +3,14 @@ package com.gogoy.components.auth.register
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
+import android.widget.Button
 import com.gogoy.R
-import com.gogoy.components.main.MainActivity
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.nestedScrollView
 
 class RegisterUI : AnkoComponent<RegisterActivity> {
+
+    lateinit var btnRegister: Button
 
     override fun createView(ui: AnkoContext<RegisterActivity>) = with(ui) {
         linearLayout {
@@ -45,6 +46,7 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
                             }
 
                             editText {
+                                id = R.id.et_display_name
                                 padding = dip(15)
                                 textSize = 16f
                                 textColorResource = R.color.black
@@ -73,6 +75,7 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
                             }
 
                             editText {
+                                id = R.id.et_phone
                                 padding = dip(15)
                                 textSize = 16f
                                 textColorResource = R.color.black
@@ -101,6 +104,7 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
                             }
 
                             editText {
+                                id = R.id.et_email
                                 padding = dip(15)
                                 inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                                 textSize = 16f
@@ -130,6 +134,7 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
                             }
 
                             editText {
+                                id = R.id.et_password
                                 padding = dip(15)
                                 inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                                 textSize = 16f
@@ -159,6 +164,7 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
                             }
 
                             editText {
+                                id = R.id.et_password_confirm
                                 padding = dip(15)
                                 inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                                 textSize = 16f
@@ -173,14 +179,10 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
                         }
 
                         //button submit
-                        button {
+                        btnRegister = button {
                             textResource = R.string.register
                             textColorResource = R.color.white
                             backgroundResource = R.drawable.border_color_primary
-
-                            onClick {
-                                startActivity<MainActivity>()
-                            }
                         }.lparams(width = matchParent, height = wrapContent)
                     }
                 }

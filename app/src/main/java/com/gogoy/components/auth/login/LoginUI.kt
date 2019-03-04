@@ -45,6 +45,7 @@ class LoginUI : AnkoComponent<LoginActivity> {
                     }
 
                     editText {
+                        id = R.id.et_email
                         padding = dip(15)
                         inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                         textSize = 16f
@@ -97,6 +98,7 @@ class LoginUI : AnkoComponent<LoginActivity> {
                     }
 
                     editText {
+                        id = R.id.et_password
                         padding = dip(15)
                         inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                         textSize = 16f
