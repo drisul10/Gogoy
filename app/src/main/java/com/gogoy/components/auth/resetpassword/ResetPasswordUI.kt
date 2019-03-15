@@ -1,18 +1,23 @@
-package com.gogoy.components.auth.recovery
+package com.gogoy.components.auth.resetpassword
 
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
+import android.widget.Button
+import android.widget.EditText
 import com.gogoy.R
-import com.gogoy.components.auth.login.LoginActivity
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class ResetPasswordUI : AnkoComponent<ResetPasswordActivity> {
+
+    lateinit var etPassword: EditText
+    lateinit var etConfirmPassword: EditText
+    lateinit var btnProcess: Button
 
     override fun createView(ui: AnkoContext<ResetPasswordActivity>) = with(ui) {
         linearLayout {
             lparams(width = matchParent, height = matchParent)
+            id = R.id.ll_root
             gravity = Gravity.CENTER
             backgroundColorResource = R.color.white
 
@@ -36,7 +41,7 @@ class ResetPasswordUI : AnkoComponent<ResetPasswordActivity> {
                         bottomMargin = dip(10)
                     }
 
-                    editText {
+                    etPassword = editText {
                         padding = dip(15)
                         inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                         textSize = 16f
@@ -66,7 +71,7 @@ class ResetPasswordUI : AnkoComponent<ResetPasswordActivity> {
                         bottomMargin = dip(10)
                     }
 
-                    editText {
+                    etConfirmPassword = editText {
                         padding = dip(15)
                         inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                         textSize = 16f
@@ -80,18 +85,17 @@ class ResetPasswordUI : AnkoComponent<ResetPasswordActivity> {
                     }
                 }
 
-                //button submit
-                button {
-                    textResource = R.string.done
+                //button process
+                btnProcess = button {
+                    textResource = R.string.process
                     textColorResource = R.color.white
                     backgroundResource = R.drawable.border_color_primary
-
-                    onClick {
-                        //TODO: option new activity to show info
-                        startActivity<LoginActivity>()
-                    }
                 }.lparams(width = matchParent, height = wrapContent)
             }
         }
+    }
+
+    companion object {
+        fun instance() = ResetPasswordUI()
     }
 }

@@ -1,16 +1,21 @@
-package com.gogoy.components.auth.recovery
+package com.gogoy.components.auth.resetpassword
 
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
+import android.widget.Button
+import android.widget.EditText
 import com.gogoy.R
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class SendEmailUI : AnkoComponent<SendEmailActivity> {
+class SendCodeUI : AnkoComponent<SendCodeActivity> {
 
-    override fun createView(ui: AnkoContext<SendEmailActivity>) = with(ui) {
+    lateinit var etEmail: EditText
+    lateinit var btnReset: Button
+
+    override fun createView(ui: AnkoContext<SendCodeActivity>) = with(ui) {
         linearLayout {
+            id = R.id.ll_root
             lparams(width = matchParent, height = matchParent)
             gravity = Gravity.CENTER
             backgroundColorResource = R.color.white
@@ -34,7 +39,7 @@ class SendEmailUI : AnkoComponent<SendEmailActivity> {
                         bottomMargin = dip(10)
                     }
 
-                    editText {
+                    etEmail = editText {
                         padding = dip(15)
                         inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                         textSize = 16f
@@ -48,19 +53,17 @@ class SendEmailUI : AnkoComponent<SendEmailActivity> {
                     }
                 }
 
-                //button submit
-                button {
-                    textResource = R.string.send
+                //button reset password
+                btnReset = button {
+                    textResource = R.string.reset_password
                     textColorResource = R.color.white
                     backgroundResource = R.drawable.border_color_primary
-
-                    onClick {
-                        //TODO: send email and access link to reset password
-                        //option new activity for information
-                        startActivity<ResetPasswordActivity>()
-                    }
                 }.lparams(width = matchParent, height = wrapContent)
             }
         }
+    }
+
+    companion object {
+        fun instance() = SendCodeUI()
     }
 }

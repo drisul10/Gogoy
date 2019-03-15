@@ -6,8 +6,8 @@ import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
 import com.gogoy.R
-import com.gogoy.components.auth.recovery.SendEmailActivity
 import com.gogoy.components.auth.register.RegisterActivity
+import com.gogoy.components.auth.resetpassword.SendCodeActivity
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -18,6 +18,7 @@ class LoginUI : AnkoComponent<LoginActivity> {
     override fun createView(ui: AnkoContext<LoginActivity>) = with(ui) {
         linearLayout {
             lparams(width = matchParent, height = matchParent)
+            id = R.id.ll_root
             gravity = Gravity.CENTER
             backgroundColorResource = R.color.white
 
@@ -90,7 +91,7 @@ class LoginUI : AnkoComponent<LoginActivity> {
                             isClickable = true
 
                             onClick {
-                                startActivity<SendEmailActivity>()
+                                startActivity<SendCodeActivity>()
                             }
                         }.lparams {
                             weight = 1f
@@ -114,6 +115,7 @@ class LoginUI : AnkoComponent<LoginActivity> {
 
                 //button submit
                 btnLogin = button {
+                    elevation = 5f
                     textResource = R.string.login
                     textColorResource = R.color.white
                     backgroundResource = R.drawable.border_color_primary

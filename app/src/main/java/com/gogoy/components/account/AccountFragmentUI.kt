@@ -3,6 +3,7 @@ package com.gogoy.components.account
 import android.graphics.Typeface
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
@@ -13,10 +14,12 @@ import org.jetbrains.anko.support.v4.nestedScrollView
 class AccountFragmentUI<T> : AnkoComponent<T> {
 
     lateinit var rvMenuAccount: RecyclerView
+    lateinit var tvUserDisplayName: TextView
 
     override fun createView(ui: AnkoContext<T>) = with(ui) {
         relativeLayout {
             lparams(width = matchParent, height = matchParent)
+            id = R.id.rl_root
             backgroundColorResource = R.color.white
 
             //container
@@ -42,8 +45,7 @@ class AccountFragmentUI<T> : AnkoComponent<T> {
                     verticalLayout {
                         lparams(width = matchParent, height = wrapContent)
 
-                        textView {
-                            textResource = R.string.dummy_people_name
+                        tvUserDisplayName = textView {
                             textSize = 20f
                             textColorResource = R.color.colorText
                             typeface = Typeface.DEFAULT_BOLD

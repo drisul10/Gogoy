@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Kang Gogoy</string>
     <string name="account">Akun</string>
+    <string name="account_settings">Pengaturan Akun</string>
     <string name="activate">Aktifkan</string>
     <string name="best_seller">Terlaris</string>
     <string name="buy">Beli</string>
@@ -17,8 +18,10 @@
     <string name="dont_have_account">Belum memiliki akun?</string>
     <string name="email">Email</string>
     <string name="email_addr">Email Address</string>
+    <string name="error_unknown">Unknown Error</string>
     <string name="exit">Keluar</string>
     <string name="exit_message">Apakah yakin ingin keluar dari aplikasi?</string>
+    <string name="fill_code">Masukkan Kode</string>
     <string name="fill_email">Masukkan Email</string>
     <string name="fill_full_name">Masukkan Nama Lengkap</string>
     <string name="fill_mobile_number">Masukkan Nomor handphone</string>
@@ -35,21 +38,31 @@
         dahulu untuk melanjutkan
     </string>
     <string name="info">Informasi</string>
+    <string name="loading">Sedang memproses...</string>
     <string name="login">Masuk</string>
+    <string name="logout">Keluar</string>
     <string name="location_send">Lokasi pengiriman</string>
     <string name="mobile_number">Nomor handphone</string>
     <string name="num_nil">0</string>
     <string name="paswd">Password</string>
     <string name="paswd_new">Password baru</string>
     <string name="paswd_repeat">Ulangi password</string>
+    <string name="process">Proses</string>
     <string name="promo">Promo</string>
     <string name="register">Register</string>
     <string name="register_now">Daftar sekarang</string>
     <string name="related_item">Item terkait</string>
+    <string name="resend_code">Kirim ulang kode</string>
+    <string name="reset_password">Reset password</string>
     <string name="send">Kirim</string>
     <string name="sign_min">-</string>
     <string name="sign_plus">+</string>
+    <string name="submit">Proses</string>
     <string name="trucuk">Trucuk</string>
+    <string name="validate">Validasi</string>
+    <string name="verivy_code_message">Kami telah mengirimkan kode validasi ke alamat %1$s, buka email Anda kemudian
+        masukkan kode tersebut.
+    </string>
     <string name="verified_account">Akun terverifikasi</string>
     <string name="view_all">Lihat semua</string>
     <string name="dummy_people_name">Osas</string>

@@ -1,9 +1,8 @@
-package com.gogoy.components.auth.register
+package com.gogoy.components.auth.resetpassword
 
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.AuthFailureError
@@ -11,52 +10,46 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.gogoy.R
-import com.gogoy.components.main.MainActivity
+import com.gogoy.components.auth.login.LoginActivity
 import com.gogoy.utils.EndPoints
 import com.gogoy.utils.VolleySingleton
 import com.gogoy.utils.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class RegisterActivity : AppCompatActivity() {
+class ResetPasswordActivity : AppCompatActivity() {
 
-    val ui = RegisterUI()
-    private lateinit var etDisplayName: EditText
-    private lateinit var etEmail: EditText
-    private lateinit var etPhone: EditText
-    private lateinit var etPaswd: EditText
-    private lateinit var etPaswdConfirm: EditText
+    private val ui = ResetPasswordUI.instance()
+    private lateinit var iToken: String
     private lateinit var snackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //set UI
         ui.setContentView(this)
 
-        ui.btnRegister.onClick {
-            hideKeyboard()
+        iToken = intent.getStringExtra("TOKEN")
 
+        println("TOKEN NEW PASSWORD: $iToken")
+
+        ui.btnProcess.onClick {
+            hideKeyboard()
             val rootLayout: LinearLayout = find(R.id.ll_root)
             snackbar = Snackbar.make(rootLayout, R.string.loading, Snackbar.LENGTH_INDEFINITE)
             snackbar.show()
-            register()
+
+            process()
         }
     }
 
-    private fun register() {
-        etDisplayName = find(R.id.et_display_name)
-        etEmail = find(R.id.et_email)
-        etPhone = find(R.id.et_phone)
-        etPaswd = find(R.id.et_password)
-        etPaswdConfirm = find(R.id.et_password_confirm)
-
+    private fun process() {
         val stringRequest = object : StringRequest(
             Request.Method.POST,
-            EndPoints.URL_AUTH_REGISTER,
+            EndPoints.URL_RESET_NEW_PASSWORD,
             Response.Listener { response ->
                 try {
                     val obj = JSONObject(response)
@@ -65,12 +58,13 @@ class RegisterActivity : AppCompatActivity() {
                             snackbar.setText(obj.getString("message"))
                             Handler().postDelayed({
                                 snackbar.dismiss()
-                                startActivity(intentFor<MainActivity>().clearTask().newTask())
-                            }, 3000)
+                                startActivity(intentFor<LoginActivity>().newTask().clearTask())
+                                overridePendingTransition(R.anim.right_in, R.anim.left_out)
+                            }, 1500)
                         }
                     }
                 } catch (e: JSONException) {
-                    //TODO: send error
+                    //TODO: send data
                     e.printStackTrace()
                 }
             },
@@ -81,48 +75,33 @@ class RegisterActivity : AppCompatActivity() {
 
                     when (obj.getBoolean(("status"))) {
                         false -> {
-                            val errorJSONObject = obj.getJSONObject("errors")
-                            var errorJSONArray = JSONArray()
                             val snackbarView = snackbar.view
-
-                            when {
-                                errorJSONObject.has("name")
-                                -> errorJSONArray = errorJSONObject.getJSONArray("name")
-                                errorJSONObject.has("email")
-                                -> errorJSONArray = errorJSONObject.getJSONArray("email")
-                                errorJSONObject.has("password")
-                                -> errorJSONArray = errorJSONObject.getJSONArray("password")
-                                errorJSONObject.has("confirm_password")
-                                -> errorJSONArray = errorJSONObject.getJSONArray("confirm_password")
-                                errorJSONObject.has("no_hp")
-                                -> errorJSONArray = errorJSONObject.getJSONArray("no_hp")
-                                else -> {
-                                    //TODO: send data
-                                    errorJSONArray.put("${R.string.error_unknown}. Code: REG")
-                                }
-                            }
-
                             snackbarView.setBackgroundColor(Color.RED)
-                            snackbar.setText(errorJSONArray[0].toString())
+                            snackbar.setText(obj.getString("message"))
                             Handler().postDelayed({
                                 snackbar.dismiss()
                             }, 3000)
                         }
                     }
                 } catch (e: JSONException) {
-                    //TODO: send error
+                    //TODO: send data
                     e.printStackTrace()
                 }
             }
         ) {
             @Throws(AuthFailureError::class)
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = iToken
+                headers["Content-Type"] = "application/x-www-form-urlencoded"
+
+                return headers
+            }
+
             override fun getParams(): Map<String, String> {
                 val params = HashMap<String, String>()
-                params["name"] = etDisplayName.text.toString()
-                params["email"] = etEmail.text.toString()
-                params["password"] = etPaswd.text.toString()
-                params["confirm_password"] = etPaswdConfirm.text.toString()
-                params["no_hp"] = etPhone.text.toString()
+                params["password"] = ui.etPassword.text.toString()
+                params["confirm_password"] = ui.etConfirmPassword.text.toString()
                 return params
             }
         }

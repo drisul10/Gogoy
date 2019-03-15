@@ -10,7 +10,7 @@ class ArrayListMenuAccount {
             AccountMenuModel("1", "Transaksi", R.drawable.ic_transaction_primary_24dp),
             AccountMenuModel("2", "Favorit", R.drawable.ic_favorite_primary_24dp),
             AccountMenuModel("3", "Bantuan", R.drawable.ic_help_primary_24dp),
-            AccountMenuModel("4", "Pengaturan Akun", R.drawable.ic_settings_primary_24dp)
+            AccountMenuModel("SET", "Pengaturan Akun", R.drawable.ic_settings_primary_24dp)
         )
     }
 }

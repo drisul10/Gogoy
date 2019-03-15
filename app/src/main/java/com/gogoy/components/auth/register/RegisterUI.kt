@@ -15,6 +15,7 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
     override fun createView(ui: AnkoContext<RegisterActivity>) = with(ui) {
         linearLayout {
             lparams(width = matchParent, height = matchParent)
+            id = R.id.ll_root
             backgroundColorResource = R.color.white
 
             nestedScrollView {
@@ -51,35 +52,6 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
                                 textSize = 16f
                                 textColorResource = R.color.black
                                 hintResource = R.string.fill_full_name
-                                hintTextColor = R.color.colorText
-                                backgroundResource = R.drawable.edit_text_states
-                            }.lparams {
-                                width = matchParent
-                                height = wrapContent
-                            }
-                        }
-
-                        //field mobile number
-                        verticalLayout {
-                            lparams(width = matchParent, height = wrapContent) {
-                                bottomMargin = dip(20)
-                            }
-
-                            textView {
-                                gravity = Gravity.START
-                                textResource = R.string.mobile_number
-                                textColorResource = R.color.black
-                                typeface = Typeface.DEFAULT_BOLD
-                            }.lparams {
-                                bottomMargin = dip(10)
-                            }
-
-                            editText {
-                                id = R.id.et_phone
-                                padding = dip(15)
-                                textSize = 16f
-                                textColorResource = R.color.black
-                                hintResource = R.string.fill_mobile_number
                                 hintTextColor = R.color.colorText
                                 backgroundResource = R.drawable.edit_text_states
                             }.lparams {
@@ -170,6 +142,35 @@ class RegisterUI : AnkoComponent<RegisterActivity> {
                                 textSize = 16f
                                 textColorResource = R.color.black
                                 hintResource = R.string.fill_paswd_repeat
+                                hintTextColor = R.color.colorText
+                                backgroundResource = R.drawable.edit_text_states
+                            }.lparams {
+                                width = matchParent
+                                height = wrapContent
+                            }
+                        }
+
+                        //field mobile number
+                        verticalLayout {
+                            lparams(width = matchParent, height = wrapContent) {
+                                bottomMargin = dip(20)
+                            }
+
+                            textView {
+                                gravity = Gravity.START
+                                textResource = R.string.mobile_number
+                                textColorResource = R.color.black
+                                typeface = Typeface.DEFAULT_BOLD
+                            }.lparams {
+                                bottomMargin = dip(10)
+                            }
+
+                            editText {
+                                id = R.id.et_phone
+                                padding = dip(15)
+                                textSize = 16f
+                                textColorResource = R.color.black
+                                hintResource = R.string.fill_mobile_number
                                 hintTextColor = R.color.colorText
                                 backgroundResource = R.drawable.edit_text_states
                             }.lparams {
