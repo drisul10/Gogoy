@@ -2,7 +2,6 @@
 <resources>
 
     <!--AlertBuilder-->
-    <item name="alert_dialog_del_item_cart" type="id"/>
 
     <!--Button-->
     <item name="bt_min" type="id"/>
@@ -29,8 +28,16 @@
     <!--LinearLayout-->
     <item name="ll_btn_buy" type="id"/>
     <item name="ll_btn_min_plus" type="id"/>
-    <item name="ll_container" type="id"/>
-    <item name="ll_root" type="id"/>
+    <item name="ll_wrapper_promo_komoditi" type="id"/>
+    <item name="ll_wrapper_bt_payment" type="id"/>
+
+    <!--ProgressBar-->
+    <item name="pb_banner" type="id"/>
+    <item name="pb_items" type="id"/>
+    <item name="pb_items_cart" type="id"/>
+    <item name="pb_items_related" type="id"/>
+    <item name="pb_promo_komoditi" type="id"/>
+    <item name="pb_promo_sayur" type="id"/>
 
     <!--RecyclerView-->
     <item name="rv_banner" type="id"/>
@@ -38,24 +45,30 @@
     <item name="rv_cart_item" type="id"/>
     <item name="rv_category" type="id"/>
     <item name="rv_item" type="id"/>
+    <item name="rv_item_group" type="id"/>
     <item name="rv_item_related" type="id"/>
     <item name="rv_menu_account" type="id"/>
-    <item name="rv_promo" type="id"/>
 
     <!--RelativeLayout-->
     <item name="rl_root" type="id"/>
     <item name="rl_wrapper_badge" type="id"/>
+
+    <!--SwipeRefresh-->
+    <item name="swipe_refresh" type="id"/>
 
     <!--TabLayout-->
     <item name="tab_layout" type="id"/>
 
     <!--TextView-->
     <item name="tv_ctg_name" type="id"/>
+    <item name="tv_item_dimension" type="id"/>
     <item name="tv_item_name" type="id"/>
     <item name="tv_item_price" type="id"/>
+    <item name="tv_item_price_discount" type="id"/>
     <item name="tv_item_owner" type="id"/>
+    <item name="tv_item_unit" type="id"/>
     <item name="tv_menu_name" type="id"/>
-    <item name="tv_total_bill" type="id"/>
+    <item name="tv_subtotal" type="id"/>
     <item name="tv_total_per_item" type="id"/>
 
     <!--ViewPager-->

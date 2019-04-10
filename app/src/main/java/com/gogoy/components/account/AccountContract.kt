@@ -6,9 +6,11 @@ import com.gogoy.components.base.BaseView
 interface AccountContract {
     interface View : BaseView<Presenter> {
         fun showMenu()
+        fun showUserProfile()
     }
 
     interface Presenter : BasePresenter {
         fun loadMenu()
+        fun loadUserProfile()
     }
 }

@@ -12,6 +12,7 @@ import com.gogoy.R
 import com.gogoy.components.bengkel.BengkelActivity
 import com.gogoy.components.items.ItemsActivity
 import com.gogoy.data.models.CategoryModel
+import com.gogoy.utils.Constant
 import kotlinx.coroutines.delay
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -38,8 +39,14 @@ class CategoryAdapter(
             val activity = context as Activity
 
             when (item.id) {
-                "1" -> activity.startActivity<ItemsActivity>("ID" to item.id, "NAME" to item.name)
-                "2" -> activity.startActivity<ItemsActivity>("ID" to item.id, "NAME" to item.name)
+                "1" -> activity.startActivity<ItemsActivity>(
+                    Constant.UP_TYPE_ID to Constant.ID_ITEM_ALL_KOMODITI,
+                    Constant.UP_TITLE to item.name
+                )
+                "2" -> activity.startActivity<ItemsActivity>(
+                    Constant.UP_TYPE_ID to Constant.ID_ITEM_ALL_SAYUR,
+                    Constant.UP_TITLE to item.name
+                )
                 "3" -> activity.startActivity<BengkelActivity>("ID" to item.id, "NAME" to item.name)
             }
 

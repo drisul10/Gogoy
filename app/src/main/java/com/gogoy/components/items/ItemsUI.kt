@@ -27,4 +27,8 @@ class ItemsUI : AnkoComponent<ItemsActivity> {
             }
         }
     }
+
+    companion object {
+        fun instance() = ItemsUI()
+    }
 }

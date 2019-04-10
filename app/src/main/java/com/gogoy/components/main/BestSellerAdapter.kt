@@ -18,7 +18,7 @@ import com.gogoy.R
 import com.gogoy.components.item.ItemActivity
 import com.gogoy.data.models.ItemCartModel
 import com.gogoy.data.models.ItemModel
-import com.gogoy.utils.Prefs
+import com.gogoy.utils.SharedPref
 import com.gogoy.utils.invisible
 import com.gogoy.utils.toRupiah
 import com.gogoy.utils.visible
@@ -82,10 +82,10 @@ class BestSellerAdapter(
         holder.tvName.text = item.name
         holder.tvPrice.text = toRupiah(item.price)
         holder.tvOwner.text = item.owner
-        holder.ivBadge.setImageResource(item.badge)
+        holder.ivBadge.setImageResource(R.drawable.default_image)
 
-        val prefs = Prefs(context)
-        var listItem = prefs.getPref()
+        val prefs = SharedPref(context)
+        var listItem = prefs.getDataItems()
         var totalPerItem = 0
         var indexListItem = 0
 
@@ -112,16 +112,16 @@ class BestSellerAdapter(
             holder.llBtnBuy.backgroundColorResource = R.color.colorPrimary
 
             //keep listItem up to date
-            listItem = prefs.getPref()
+            listItem = prefs.getDataItems()
             totalPerItem = 1
 
             //update listener fragment
             listener(listItem.size + 1)
 
             //check if sharedPref size 0 or data is exist then add new item list to sharedPref
-            if (prefs.getPref().size == 0 || !prefs.existId(item.id)) {
+            if (prefs.getDataItems().size == 0 || !prefs.existItemId(item.id)) {
                 listItem.add(ItemCartModel(item.id, item.name, item.price, item.owner, item.badge, totalPerItem))
-                prefs.setPref(listItem)
+                prefs.setDataItems(listItem)
             }
 
             //state when clicked btn buy
@@ -137,7 +137,7 @@ class BestSellerAdapter(
             holder.btMin.backgroundColorResource = R.color.colorPrimary
 
             //keep listItem up to date
-            listItem = prefs.getPref()
+            listItem = prefs.getDataItems()
 
             for ((j, i) in listItem.withIndex()) {
                 if (i.id == item.id) {
@@ -148,7 +148,7 @@ class BestSellerAdapter(
 
             if ((holder.tvTotalPerItem.text).toString().toInt() > 1) {
                 listItem[indexListItem].totalPerItem -= 1
-                prefs.setPref(listItem)
+                prefs.setDataItems(listItem)
 
                 //change state
                 holder.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
@@ -157,7 +157,7 @@ class BestSellerAdapter(
                 notifyDataSetChanged()
             } else {
                 listItem.removeIf { s -> s.id == item.id }
-                prefs.setPref(listItem)
+                prefs.setDataItems(listItem)
 
                 //update listener fragment
                 listener(listItem.size)
@@ -178,7 +178,7 @@ class BestSellerAdapter(
             holder.btPlus.backgroundColorResource = R.color.colorPrimary
 
             //keep listItem up to date
-            listItem = prefs.getPref()
+            listItem = prefs.getDataItems()
 
             // get current totalPerItem when data is exist
             // and then store the index into indexListItem
@@ -190,7 +190,7 @@ class BestSellerAdapter(
             }
 
             listItem[indexListItem].totalPerItem += 1
-            prefs.setPref(listItem)
+            prefs.setDataItems(listItem)
 
             //change state
             holder.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()

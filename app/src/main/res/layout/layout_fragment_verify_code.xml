@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ll_root"
-        android:orientation="vertical"
+        android:id="@+id/rl_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
     <LinearLayout
+            android:id="@+id/ll_wrapper_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
@@ -69,6 +69,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:layout_below="@+id/ll_wrapper_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
@@ -83,4 +84,4 @@
                 android:background="@drawable/border_color_primary"
         />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

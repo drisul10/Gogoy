@@ -1,178 +1,161 @@
 package com.gogoy.components.item
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.gogoy.R
-import com.gogoy.data.collections.ArrayListItem_Dummy
-import com.gogoy.data.models.ItemCartModel
-import com.gogoy.utils.Prefs
-import com.gogoy.utils.invisible
-import com.gogoy.utils.toRupiah
-import com.gogoy.utils.visible
+import com.gogoy.data.models.ItemPromoModel
+import com.gogoy.utils.*
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.delay
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.backgroundColorResource
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.find
 
-class ItemFragment : Fragment(), ItemContract.View {
-    override lateinit var presenter: ItemContract.Presenter
-    val ui = ItemFragmentUI<Fragment>()
+class ItemFragment : Fragment(), ItemContract.View, HandleMessage {
+
+    private lateinit var argId: String
     private lateinit var itemRelatedAdapter: ItemRelatedAdapter
+    private var itemsRelated: MutableList<ItemPromoModel> = mutableListOf()
+    override lateinit var presenter: ItemContract.Presenter
+    override lateinit var rootLayout: RelativeLayout
+    private lateinit var sharedPref: SharedPref
+    override lateinit var snackbar: Snackbar
+    val ui = ItemFragmentUI<Fragment>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?):
-            View? = ui.createView(AnkoContext.create(requireContext(), this))
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        argId = arguments!!.getString(Constant.UP_ID) as String
+        sharedPref = SharedPref(requireContext())
+        return ui.createView(AnkoContext.create(requireContext(), this))
+    }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.start()
+    }
 
-        val itemId: String? = arguments!!.getString("ID")
-        val itemName: String? = arguments!!.getString("NAME")
-        val itemOwner: String? = arguments!!.getString("OWNER")
-        val itemPrice: Int = arguments!!.getInt("PRICE")
-        val itemBadge: Int = arguments!!.getInt("BADGE")
-        val prefs = Prefs(requireContext())
-        var listItem = prefs.getPref()
-        var indexListItem = 0
-        var totalPerItem = 0
+    override fun onPresenterStart() {
+        presenter.requestItem(argId)
+        presenter.requestItemsRelated(requireActivity(), argId)
+        this.clickButtonBuy()
+        this.clickButtonMin()
+        this.clickButtonPlus()
+        this.progressBarShow(R.id.pb_items_related)
+        this.setViewState()
+    }
 
-        for ((j, i) in listItem.withIndex()) {
-            if (i.id == itemId) {
-                totalPerItem = listItem[j].totalPerItem
-            }
-        }
-
-        ui.tvItemName.text = itemName
-        ui.tvItemOwner.text = itemOwner
-        ui.tvItemPrice.text = toRupiah(itemPrice)
-        ui.ivItemBadge.setImageResource(itemBadge)
-        ui.tvTotalPerItem.text = totalPerItem.toString()
-
-        //set state
-        ui.llBtnBuy.visible()
-        ui.llBtnMinPlus.invisible()
-
-        if (totalPerItem > 0) {
-            ui.tvTotalPerItem.text = totalPerItem.toString()
-            ui.llBtnBuy.invisible()
-            ui.llBtnMinPlus.visible()
-        }
-
+    override fun clickButtonBuy() {
         ui.llBtnBuy.onClick {
             ui.llBtnBuy.backgroundColorResource = R.color.colorPrimaryDark
             delay(50)
             ui.llBtnBuy.backgroundColorResource = R.color.colorPrimary
 
-            //keep listItem up to date
-            listItem = prefs.getPref()
-            totalPerItem = 1
-
-            //check if sharedPref size 0 or data is exist then add new item list to sharedPref
-            if (prefs.getPref().size == 0 || !prefs.existId(itemId!!)) {
-                listItem.add(ItemCartModel(itemId!!, itemName!!, itemPrice, itemOwner!!, itemBadge, totalPerItem))
-                prefs.setPref(listItem)
-            }
-
-            //state when clicked btn buy
-            ui.tvTotalPerItem.text = totalPerItem.toString()
-            ui.llBtnBuy.invisible()
-            ui.llBtnMinPlus.visible()
-
-            //update cart count
-            activity!!.invalidateOptionsMenu()
-        }
-
-        ui.btnPlus.onClick {
-
-            ui.btnPlus.backgroundColorResource = R.color.colorPrimaryDark
-            delay(30)
-            ui.btnPlus.backgroundColorResource = R.color.colorPrimary
-
-            //keep listItem up to date
-            listItem = prefs.getPref()
-
-            // get current totalPerItem when data is exist
-            // and then store the index into indexListItem
-            for ((j, i) in listItem.withIndex()) {
-                if (i.id == itemId) {
-                    totalPerItem = i.totalPerItem
-                    indexListItem = j
-                }
-            }
-
-            listItem[indexListItem].totalPerItem += 1
-            prefs.setPref(listItem)
+            sharedPref.cartAddItem(argId to 1)
 
             //change state
-            ui.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
+            ui.llBtnBuy.invisible()
+            ui.llBtnMinPlus.visible()
+            ui.tvTotalPerItem.text = sharedPref.cartAmount(argId).toString()
+
+            //update cart
+            activity!!.invalidateOptionsMenu()
         }
+    }
 
+    override fun clickButtonMin() {
         ui.btnMin.onClick {
-
             ui.btnMin.backgroundColorResource = R.color.colorPrimaryDark
             delay(30)
             ui.btnMin.backgroundColorResource = R.color.colorPrimary
 
-            //keep listItem up to date
-            listItem = prefs.getPref()
+            sharedPref.cartReduceAmountItem(argId to sharedPref.cartAmount(argId))
 
             if ((ui.tvTotalPerItem.text).toString().toInt() > 1) {
-                listItem[indexListItem].totalPerItem -= 1
-                prefs.setPref(listItem)
-
-                //change state
-                ui.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
+                ui.tvTotalPerItem.text = sharedPref.cartAmount(argId).toString()
             } else {
-                listItem.removeIf { s -> s.id == itemId }
-                prefs.setPref(listItem)
-
-                //hide layout btn min&plus and show layout btn buy
                 ui.llBtnMinPlus.invisible()
                 ui.llBtnBuy.visible()
 
-                //update cart count
+                //update cart
                 activity!!.invalidateOptionsMenu()
             }
         }
+    }
 
-        //start presenter
-        presenter.start()
+    override fun clickButtonPlus() {
+        ui.btnPlus.onClick {
+            ui.btnPlus.backgroundColorResource = R.color.colorPrimaryDark
+            delay(30)
+            ui.btnPlus.backgroundColorResource = R.color.colorPrimary
 
-        setTab()
+            sharedPref.cartAddAmountItem(argId to sharedPref.cartAmount(argId))
 
-        val vpTab = view.find<ViewPager>(R.id.vp_tab)
-        val tabInfoFragment = TabInfoFragment()
-        tabInfoFragment.arguments = arguments
+            //change state
+            ui.tvTotalPerItem.text = sharedPref.cartAmount(argId).toString()
+        }
+    }
+
+    override fun progressBarHide(id: Any) {
+        when (id) {
+            R.id.pb_items_related -> ui.pbItemsRelated.gone()
+        }
+    }
+
+    override fun progressBarShow(id: Any) {
+        when (id) {
+            R.id.pb_items_related -> ui.pbItemsRelated.visible()
+        }
+    }
+
+    override fun setTab(strDesc: String, strInfo: String) {
+        val pagerTabAdapter = PagerTabAdapter(requireFragmentManager(), strInfo, strDesc)
+
+        // Set up the ViewPager with the sections adapter.
+        val viewPagerTab = view?.findViewById<ViewPager?>(R.id.vp_tab)
+        viewPagerTab?.adapter = pagerTabAdapter
+
+        val tabLayout = view?.findViewById<View>(R.id.tab_layout) as TabLayout
+        tabLayout.setupWithViewPager(viewPagerTab)
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
+
+        val bundleDesc = Bundle()
+        val bundleInfo = Bundle()
         val tabDescFragment = TabDescFragment()
-        tabDescFragment.arguments = arguments
+        val tabInfoFragment = TabInfoFragment.instance()
 
-        if (vpTab.currentItem == 0) {
+        bundleDesc.putString(Constant.UP_DESC, strDesc)
+        bundleInfo.putString(Constant.UP_INFO, strInfo)
+
+        tabInfoFragment.arguments = bundleInfo
+        tabDescFragment.arguments = bundleDesc
+
+        val vpTab = view?.find<ViewPager>(R.id.vp_tab)
+        if (vpTab?.currentItem == 0) {
             fragmentManager!!
                 .beginTransaction()
                 .replace(R.id.fl_tab_content, tabInfoFragment, TabInfoFragment::class.simpleName)
                 .commit()
         }
 
-        vpTab.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        vpTab?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
-
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> fragmentManager!!
-                        .beginTransaction()
-                        .replace(R.id.fl_tab_content, tabInfoFragment, TabInfoFragment::class.simpleName)
-                        .commit()
+                    0 -> {
+                        fragmentManager!!
+                            .beginTransaction()
+                            .replace(R.id.fl_tab_content, tabInfoFragment, TabInfoFragment::class.simpleName)
+                            .commit()
+                    }
 
                     else -> fragmentManager!!
                         .beginTransaction()
@@ -180,27 +163,55 @@ class ItemFragment : Fragment(), ItemContract.View {
                         .commit()
                 }
             }
-
         })
     }
 
-    override fun showItemRelated() {
-        //TODO: real data from API
-        itemRelatedAdapter = ItemRelatedAdapter(ArrayListItem_Dummy.list)
+    override fun setViewState() {
+        ui.llBtnBuy.visible()
+        ui.llBtnMinPlus.invisible()
+
+        if (sharedPref.cartAmount(argId) > 0) {
+            ui.llBtnBuy.invisible()
+            ui.llBtnMinPlus.visible()
+        }
+    }
+
+    override fun showItem(data: ItemPromoModel) {
+        ui.tvItemName.text = data.name
+        ui.tvItemOwner.text = data.owner_id
+        ui.tvItemPrice.text = toRupiah(data.price)
+        ui.ivItemBadge.setImageBitmap(decodeImageBase64ToBitmap(data.badge))
+        ui.tvTotalPerItem.text = sharedPref.cartAmount(data.id).toString()
+    }
+
+    override fun showItemsRelated(data: Collection<ItemPromoModel>) {
+        ui.rvItemRelated.visible()
+        itemsRelated.clear()
+        itemsRelated.addAll(data)
+
+        itemRelatedAdapter = ItemRelatedAdapter(requireContext(), itemsRelated)
         ui.rvItemRelated.adapter = itemRelatedAdapter
     }
 
-    private fun setTab() {
-        val pagerTabAdapter = PagerTabAdapter(requireFragmentManager())
+    override fun snackbarChange(message: String, color: Int) {
+        super.change(message, color)
+    }
 
-        // Set up the ViewPager with the sections adapter.
-        val viewPagerTab = view!!.findViewById<ViewPager?>(R.id.vp_tab)
-        viewPagerTab!!.adapter = pagerTabAdapter
+    override fun snackbarDismissOn(delay: Long) {
+        super.dismissOn(delay)
+    }
 
-        val tabLayout = view!!.findViewById<View>(R.id.tab_layout) as TabLayout
-        tabLayout.setupWithViewPager(viewPagerTab)
+    override fun snackbarInit() {
+        rootLayout = find(R.id.rl_root)
+        snackbar = Snackbar.make(rootLayout, R.string.loading, Snackbar.LENGTH_INDEFINITE)
+    }
 
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
+    override fun snackbarShow(message: String, color: Int) {
+        super.show(message, color)
+    }
+
+    override fun swipe() {
+        //TODO
     }
 
     companion object {

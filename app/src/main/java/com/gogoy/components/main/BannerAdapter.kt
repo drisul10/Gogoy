@@ -8,10 +8,11 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
 import com.gogoy.data.models.BannerModel
+import com.gogoy.utils.decodeImageBase64ToBitmap
 import org.jetbrains.anko.*
 
 class BannerAdapter(
-    private var list: ArrayList<BannerModel> = arrayListOf()
+    private var list: MutableList<BannerModel> = mutableListOf()
 ) : RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,7 +24,7 @@ class BannerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
 
-        holder.ivBadge.setImageResource(item.badge)
+        holder.ivBadge.setImageBitmap(decodeImageBase64ToBitmap(item.badge))
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

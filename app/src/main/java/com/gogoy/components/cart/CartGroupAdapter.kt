@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
-import android.os.Build
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
@@ -13,22 +12,22 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
-import com.gogoy.data.models.ItemCartModel
-import com.gogoy.utils.Prefs
-import com.gogoy.utils.toRupiah
+import com.gogoy.components.item.ItemActivity
+import com.gogoy.data.models.ItemPromoModel
+import com.gogoy.utils.*
+import kotlinx.coroutines.delay
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
-class CartItemAdapter(
+class CartGroupAdapter(
     private var context: Context,
-    private var list: ArrayList<ItemCartModel> = arrayListOf(),
-    val listener: (Int) -> Unit
-) : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
-
-    private var totalBill: Int = 0
+    private var list: MutableList<ItemPromoModel> = mutableListOf(),
+    val listenerOwnerId: (String) -> Unit,
+    val listenerPrice: (Int) -> Unit
+) : RecyclerView.Adapter<CartGroupAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(PartialUI().createView(AnkoContext.create(parent.context, parent)))
@@ -36,39 +35,43 @@ class CartItemAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        val prefs = Prefs(context)
-        var listItem = prefs.getPref()
-        var indexListItem = 0
-
-        for ((j, i) in listItem.withIndex()) {
-            if (i.id == item.id) indexListItem = j
-        }
+        val activity = context as Activity
+        val prefs = SharedPref(context)
 
         holder.tvName.text = item.name
-        holder.ivBadge.setImageResource(item.badge)
+        holder.ivBadge.setImageBitmap(decodeImageBase64ToBitmap(item.badge))
         holder.tvPrice.text = toRupiah(item.price)
-        holder.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
+        holder.tvTotalPerItem.text = prefs.cartAmount(item.id).toString()
 
-        //set total bill and send to fragment
-        totalBill += item.price * listItem[indexListItem].totalPerItem
-        listener(totalBill)
+        holder.parent.onClick {
+            activity.startActivity<ItemActivity>(
+                Constant.ACTIVITY_BEFORE to Constant.ACTIVITY_CART_BACK,
+                Constant.UP_ID to item.id,
+                Constant.UP_ITEM_NAME to item.name
+            )
+            activity.overridePendingTransition(R.anim.right_in, R.anim.left_out)
+        }
+
+        holder.parent.onLongClick {
+            activity.startActivity<ItemActivity>(
+                Constant.ACTIVITY_BEFORE to Constant.ACTIVITY_CART_BACK,
+                Constant.UP_ID to item.id,
+                Constant.UP_ITEM_NAME to item.name
+            )
+            activity.overridePendingTransition(R.anim.right_in, R.anim.left_out)
+        }
 
         holder.btMin.onClick {
-            listItem = prefs.getPref()
+            holder.btMin.backgroundColorResource = R.color.colorPrimaryDark
+            delay(30)
+            holder.btMin.backgroundColorResource = R.color.colorPrimary
 
             if ((holder.tvTotalPerItem.text).toString().toInt() > 1) {
-                listItem[indexListItem].totalPerItem -= 1
-                prefs.setPref(listItem)
-
-                //set state tvTotalPerItem
-                holder.tvTotalPerItem.text = ((holder.tvTotalPerItem.text).toString().toInt() - 1).toString()
-
-                //set total bill and send to fragment
-                totalBill -= item.price
-                listener(totalBill)
+                prefs.cartReduceAmountItem(item.id to prefs.cartAmount(item.id))
+                holder.tvTotalPerItem.text = prefs.cartAmount(item.id).toString()
+                listenerPrice(-(item.price))
             } else {
                 val alertDialog = AlertDialog.Builder(context)
                 alertDialog.setTitle(R.string.confirm)
@@ -76,13 +79,11 @@ class CartItemAdapter(
                 alertDialog.setMessage("Apakah yakin menghapus item ${item.name} dari keranjang?")
                 alertDialog.setPositiveButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
                 alertDialog.setNegativeButton(R.string.del) { _, _ ->
-                    listItem.removeIf { s -> s.id == item.id }
-                    prefs.setPref(listItem)
-
-                    //just for refresh recyclerView
-                    val activity = context as Activity
-                    activity.startActivity(context.intentFor<CartActivity>("ACTIVITY_ORIGIN" to "MAIN").clearTask().newTask())
-                    activity.overridePendingTransition(R.anim.blink, R.anim.blink)
+                    prefs.cartReduceAmountItem(item.id to prefs.cartAmount(item.id))
+                    list.removeAt(position)
+                    notifyDataSetChanged()
+                    if (list.size == 0) listenerOwnerId(item.owner_id)
+                    listenerPrice(-(item.price))
                 }
 
                 //create and show dialog
@@ -92,17 +93,19 @@ class CartItemAdapter(
         }
 
         holder.btPlus.onClick {
-            listItem = prefs.getPref()
+            holder.btPlus.backgroundColorResource = R.color.colorPrimaryDark
+            delay(30)
+            holder.btPlus.backgroundColorResource = R.color.colorPrimary
 
-            listItem[indexListItem].totalPerItem += 1
-            prefs.setPref(listItem)
+            prefs.cartAddAmountItem(item.id to prefs.cartAmount(item.id))
+            listenerPrice(item.price)
 
-            //set state tvTotalPerItem
-            holder.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
+            //change state
+            holder.tvTotalPerItem.text = prefs.cartAmount(item.id).toString()
+        }
 
-            //set total bill and send to fragment
-            totalBill += item.price
-            listener(totalBill)
+        if (prefs.cartAmount(item.id) == 0) {
+            holder.parent.gone()
         }
     }
 
@@ -113,6 +116,7 @@ class CartItemAdapter(
         var tvTotalPerItem: TextView = view.find(R.id.tv_total_per_item)
         var btMin: Button = view.find(R.id.bt_min)
         var btPlus: Button = view.find(R.id.bt_plus)
+        val parent: LinearLayout = view.find(R.id.parent)
     }
 
     private class PartialUI : AnkoComponent<ViewGroup> {
@@ -121,12 +125,11 @@ class CartItemAdapter(
             linearLayout {
                 lparams(width = matchParent, height = wrapContent)
 
-                //container
                 linearLayout {
                     lparams(width = matchParent, height = wrapContent) {
                         verticalMargin = dip(10)
                     }
-                    id = R.id.ll_container
+                    id = R.id.parent
                     orientation = LinearLayout.HORIZONTAL
 
                     linearLayout {
@@ -150,7 +153,7 @@ class CartItemAdapter(
                                 id = R.id.tv_item_name
                                 textSize = 16f
                                 typeface = Typeface.DEFAULT_BOLD
-                                maxWidth = dip(160)
+                                maxWidth = dip(140)
                                 maxLines = 1
                                 ellipsize = TextUtils.TruncateAt.END
                                 textColorResource = R.color.colorPrimary
@@ -159,7 +162,7 @@ class CartItemAdapter(
                             textView {
                                 id = R.id.tv_item_price
                                 textSize = 16f
-                                maxWidth = dip(160)
+                                maxWidth = dip(140)
                                 maxLines = 1
                                 ellipsize = TextUtils.TruncateAt.END
                                 textColorResource = R.color.colorText

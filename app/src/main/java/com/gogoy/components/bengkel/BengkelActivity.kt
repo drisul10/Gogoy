@@ -22,7 +22,6 @@ class BengkelActivity : AppCompatActivity() {
         ui.setContentView(this)
 
         //get intent
-        val idCategory: String? = intent.getStringExtra("ID")
         val nameCategory: String? = intent.getStringExtra("NAME")
 
         //call toolbar

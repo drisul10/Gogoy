@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gogoy.R
 import com.gogoy.components.item.ItemActivity
 import com.gogoy.components.main.MainActivity
+import com.gogoy.utils.Constant
 import com.gogoy.utils.replaceFragmentInActivity
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
@@ -18,8 +19,6 @@ class CartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //set UI
         ui.setContentView(this)
 
         //call toolbar
@@ -30,33 +29,31 @@ class CartActivity : AppCompatActivity() {
             .findFragmentById(R.id.fl_main_content) as CartFragment? ?: CartFragment.newInstance().also {
             replaceFragmentInActivity(it, R.id.fl_main_content)
         }
-        cartPresenter = CartPresenter(cartFragment)
+        cartPresenter = CartPresenter(cartFragment, applicationContext)
     }
 
     //on press back
     override fun onBackPressed() {
-        val activityOrigin: String = intent.getStringExtra("ACTIVITY_ORIGIN")
+        if (!(intent.getStringExtra(Constant.ACTIVITY_BEFORE).isNullOrEmpty())) {
+            val activityBefore: String = intent.getStringExtra(Constant.ACTIVITY_BEFORE)
 
-        when (activityOrigin) {
-            "MAIN" -> startActivity(intentFor<MainActivity>("ACTIVITY_ORIGIN" to "CART").clearTask().newTask())
-            "ITEM" -> {
-                val itemId: String = intent.getStringExtra("ID")
-                val itemName: String = intent.getStringExtra("NAME")
-                val itemPrice: Int = intent.getIntExtra("PRICE", 0)
-                val itemOwner: String = intent.getStringExtra("OWNER")
-                val itemBadge: Int = intent.getIntExtra("BADGE", 0)
+            when (activityBefore) {
+                Constant.ACTIVITY_MAIN -> startActivity(intentFor<MainActivity>().clearTask().newTask())
 
-                startActivity(
-                    intentFor<ItemActivity>(
-                        "ACTIVITY_ORIGIN" to "CART",
-                        "ID" to itemId,
-                        "NAME" to itemName,
-                        "PRICE" to itemPrice,
-                        "OWNER" to itemOwner,
-                        "BADGE" to itemBadge
-                    ).clearTask().newTask()
-                )
+                Constant.ACTIVITY_ITEM -> {
+                    val itemId: String = intent.getStringExtra(Constant.UP_ID)
+                    val itemName: String = intent.getStringExtra(Constant.UP_ITEM_NAME)
+
+                    startActivity(
+                        intentFor<ItemActivity>(
+                            Constant.UP_ID to itemId,
+                            Constant.UP_ITEM_NAME to itemName
+                        ).clearTask().newTask()
+                    )
+                }
             }
+        } else {
+            startActivity(intentFor<MainActivity>().clearTask().newTask())
         }
 
         overridePendingTransition(R.anim.left_in, R.anim.right_out)

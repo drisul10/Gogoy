@@ -2,6 +2,7 @@ package com.gogoy.components.main
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Build
 import android.text.TextUtils
@@ -16,11 +17,8 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.gogoy.R
 import com.gogoy.components.item.ItemActivity
-import com.gogoy.data.models.ItemCartModel
-import com.gogoy.utils.Prefs
-import com.gogoy.utils.invisible
-import com.gogoy.utils.toRupiah
-import com.gogoy.utils.visible
+import com.gogoy.data.models.ItemPromoModel
+import com.gogoy.utils.*
 import kotlinx.coroutines.delay
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -28,7 +26,7 @@ import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
 class PromoAdapter(
     private var context: Context,
-    private var list: ArrayList<ItemCartModel> = arrayListOf(),
+    private var list: MutableList<ItemPromoModel> = mutableListOf(),
     val listener: (Int) -> Unit
 ) : RecyclerView.Adapter<PromoAdapter.ViewHolder>() {
 
@@ -41,17 +39,14 @@ class PromoAdapter(
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+        val activity = context as Activity
+        val prefs = SharedPref(context)
 
         holder.parent.onClick {
-            val activity = context as Activity
-
             activity.startActivity<ItemActivity>(
-                "ACTIVITY_ORIGIN" to "MAIN",
-                "ID" to item.id,
-                "NAME" to item.name,
-                "OWNER" to item.owner,
-                "PRICE" to item.price,
-                "BADGE" to item.badge
+                Constant.ACTIVITY_BEFORE to Constant.ACTIVITY_MAIN,
+                Constant.UP_ID to item.id,
+                Constant.UP_ITEM_NAME to item.name
             )
             activity.overridePendingTransition(R.anim.right_in, R.anim.left_out)
 
@@ -61,15 +56,10 @@ class PromoAdapter(
         }
 
         holder.parent.onLongClick {
-            val activity = context as Activity
-
             activity.startActivity<ItemActivity>(
-                "ACTIVITY_ORIGIN" to "MAIN",
-                "ID" to item.id,
-                "NAME" to item.name,
-                "OWNER" to item.owner,
-                "PRICE" to item.price,
-                "BADGE" to item.badge
+                Constant.ACTIVITY_BEFORE to Constant.ACTIVITY_MAIN,
+                Constant.UP_ID to item.id,
+                Constant.UP_ITEM_NAME to item.name
             )
             activity.overridePendingTransition(R.anim.right_in, R.anim.left_out)
 
@@ -80,26 +70,15 @@ class PromoAdapter(
 
         holder.tvName.text = item.name
         holder.tvPrice.text = toRupiah(item.price)
-        holder.tvOwner.text = item.owner
-        holder.ivBadge.setImageResource(item.badge)
-
-        val prefs = Prefs(context)
-        var listItem = prefs.getPref()
-        var totalPerItem = 0
-        var indexListItem = 0
-
-        // get current totalPerItem when data is exist
-        // and then store the index into indexListItem
-        for ((j, i) in listItem.withIndex()) {
-            if (i.id == item.id) {
-                totalPerItem = i.totalPerItem
-                indexListItem = j
-            }
-        }
+        holder.tvDiscountPrice.text = toRupiah(item.discount_price)
+        holder.tvDimension.text = item.dimension.toString()
+        holder.tvCategoryName.text = item.category
+        holder.tvUnit.text = item.unit
+        holder.ivBadge.setImageBitmap(decodeImageBase64ToBitmap(item.badge))
 
         //set state
-        if (totalPerItem > 0) {
-            holder.tvTotalPerItem.text = totalPerItem.toString()
+        if (prefs.cartAmount(item.id) > 0) {
+            holder.tvTotalPerItem.text = prefs.cartAmount(item.id).toString()
             holder.llBtnBuy.invisible()
             holder.llBtnMinPlus.visible()
         }
@@ -110,64 +89,33 @@ class PromoAdapter(
             delay(50)
             holder.llBtnBuy.backgroundColorResource = R.color.colorPrimary
 
-            //keep listItem up to date
-            listItem = prefs.getPref()
-            totalPerItem = 1
-
-            //update listener fragment
-            listener(listItem.size + 1)
-
-            //check if sharedPref size 0 or data is exist then add new item list to sharedPref
-            if (prefs.getPref().size == 0 || !prefs.existId(item.id)) {
-                listItem.add(ItemCartModel(item.id, item.name, item.price, item.owner, item.badge, totalPerItem))
-                prefs.setPref(listItem)
-            }
+            prefs.cartAddItem(item.id to 1)
 
             //state when clicked btn buy
-            holder.tvTotalPerItem.text = totalPerItem.toString()
+            holder.tvTotalPerItem.text = prefs.cartAmount(item.id).toString()
             holder.llBtnBuy.invisible()
             holder.llBtnMinPlus.visible()
+
+            //update cart
+            activity.invalidateOptionsMenu()
         }
 
         holder.btMin.onClick {
-
             holder.btMin.backgroundColorResource = R.color.colorPrimaryDark
             delay(30)
             holder.btMin.backgroundColorResource = R.color.colorPrimary
 
-            //keep listItem up to date
-            listItem = prefs.getPref()
-
-            for ((j, i) in listItem.withIndex()) {
-                if (i.id == item.id) {
-                    totalPerItem = i.totalPerItem
-                    indexListItem = j
-                }
-            }
+            prefs.cartReduceAmountItem(item.id to prefs.cartAmount(item.id))
 
             if ((holder.tvTotalPerItem.text).toString().toInt() > 1) {
-                listItem[indexListItem].totalPerItem -= 1
-                prefs.setPref(listItem)
-
-                //change state
-                holder.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
-
-                //update adapter
-                notifyDataSetChanged()
+                holder.tvTotalPerItem.text = prefs.cartAmount(item.id).toString()
             } else {
-                listItem.removeIf { s -> s.id == item.id }
-                prefs.setPref(listItem)
-
-                //update listener fragment
-                listener(listItem.size)
-
-                //hide layout btn min&plus and show layout btn buy
                 holder.llBtnMinPlus.invisible()
                 holder.llBtnBuy.visible()
-
-                //update adapter
-                notifyDataSetChanged()
             }
+
+            //update cart
+            activity.invalidateOptionsMenu()
         }
 
         holder.btPlus.onClick {
@@ -176,33 +124,23 @@ class PromoAdapter(
             delay(30)
             holder.btPlus.backgroundColorResource = R.color.colorPrimary
 
-            //keep listItem up to date
-            listItem = prefs.getPref()
-
-            // get current totalPerItem when data is exist
-            // and then store the index into indexListItem
-            for ((j, i) in listItem.withIndex()) {
-                if (i.id == item.id) {
-                    totalPerItem = i.totalPerItem
-                    indexListItem = j
-                }
-            }
-
-            listItem[indexListItem].totalPerItem += 1
-            prefs.setPref(listItem)
+            prefs.cartAddAmountItem(item.id to prefs.cartAmount(item.id))
 
             //change state
-            holder.tvTotalPerItem.text = listItem[indexListItem].totalPerItem.toString()
+            holder.tvTotalPerItem.text = prefs.cartAmount(item.id).toString()
 
-            //update adapter
-            notifyDataSetChanged()
+            //update cart
+            activity.invalidateOptionsMenu()
         }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var tvName: TextView = view.find(R.id.tv_item_name)
         var tvPrice: TextView = view.find(R.id.tv_item_price)
-        var tvOwner: TextView = view.find(R.id.tv_item_owner)
+        var tvDimension: TextView = view.find(R.id.tv_item_dimension)
+        var tvDiscountPrice: TextView = view.find(R.id.tv_item_price_discount)
+        var tvCategoryName: TextView = view.find(R.id.tv_ctg_name)
+        var tvUnit: TextView = view.find(R.id.tv_item_unit)
         var ivBadge: ImageView = view.find(R.id.iv_item_badge)
         var llBtnBuy: LinearLayout = view.find(R.id.ll_btn_buy)
         var llBtnMinPlus: LinearLayout = view.find(R.id.ll_btn_min_plus)
@@ -239,7 +177,7 @@ class PromoAdapter(
 
                     //text name, owner and price
                     verticalLayout {
-                        lparams {
+                        lparams(width = matchParent, height = wrapContent) {
                             horizontalMargin = dip(10)
                         }
 
@@ -249,7 +187,7 @@ class PromoAdapter(
                             textSize = 16f
                             typeface = Typeface.DEFAULT_BOLD
                             maxWidth = dip(130)
-                            maxLines = 1
+                            singleLine = true
                             ellipsize = TextUtils.TruncateAt.END
                             textColorResource = R.color.colorPrimary
                         }.lparams {
@@ -257,11 +195,11 @@ class PromoAdapter(
                         }
 
                         textView {
-                            id = R.id.tv_item_owner
+                            id = R.id.tv_ctg_name
                             gravity = Gravity.START
                             textSize = 11f
                             maxWidth = dip(130)
-                            maxLines = 1
+                            singleLine = true
                             ellipsize = TextUtils.TruncateAt.END
                             textColorResource = R.color.colorText
                         }
@@ -269,14 +207,56 @@ class PromoAdapter(
                         textView {
                             id = R.id.tv_item_price
                             gravity = Gravity.START
-                            textSize = 16f
-                            typeface = Typeface.DEFAULT_BOLD
+                            textSize = 12f
                             maxWidth = dip(130)
-                            maxLines = 1
+                            singleLine = true
                             ellipsize = TextUtils.TruncateAt.END
+                            paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                             textColorResource = R.color.colorText
                         }.lparams {
-                            verticalMargin = dip(2.5f)
+                            topMargin = dip(15)
+                        }
+
+                        linearLayout {
+                            lparams(width = matchParent, height = wrapContent) {
+                                bottomMargin = dip(2.5f)
+                            }
+                            orientation = LinearLayout.HORIZONTAL
+
+                            textView {
+                                id = R.id.tv_item_price_discount
+                                gravity = Gravity.START
+                                textSize = 16f
+                                typeface = Typeface.DEFAULT_BOLD
+                                maxWidth = dip(130)
+                                singleLine = true
+                                ellipsize = TextUtils.TruncateAt.END
+                                textColorResource = R.color.colorText
+                            }.lparams {
+                                verticalMargin = dip(2.5f)
+                            }
+
+                            textView {
+                                gravity = Gravity.START
+                                textSize = 12f
+                                textResource = R.string.sign_per
+                                textColorResource = R.color.colorText
+                            }
+
+                            textView {
+                                id = R.id.tv_item_dimension
+                                gravity = Gravity.START
+                                textSize = 12f
+                                textColorResource = R.color.colorText
+                            }
+
+
+                            textView {
+                                id = R.id.tv_item_unit
+                                gravity = Gravity.START
+                                textSize = 12f
+                                textColorResource = R.color.colorText
+                            }
                         }
                     }
 

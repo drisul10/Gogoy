@@ -15,6 +15,7 @@ class AccountFragmentUI<T> : AnkoComponent<T> {
 
     lateinit var rvMenuAccount: RecyclerView
     lateinit var tvUserDisplayName: TextView
+    lateinit var ivBadge: ImageView
 
     override fun createView(ui: AnkoContext<T>) = with(ui) {
         relativeLayout {
@@ -32,13 +33,13 @@ class AccountFragmentUI<T> : AnkoComponent<T> {
                         margin = dip(20)
                     }
                     orientation = LinearLayout.HORIZONTAL
+                    backgroundResource = R.drawable.circular_50
 
-                    //TODO: rounded image
-                    imageView {
-                        imageResource = R.drawable.osas
-                        backgroundResource = R.drawable.border_color_primary
+                    ivBadge = imageView {
                         scaleType = ImageView.ScaleType.CENTER_CROP
-                    }.lparams(width = dip(80), height = dip(80)) {
+                        clipToOutline = true
+                        backgroundResource = R.drawable.circular_50
+                    }.lparams(width = dip(70), height = dip(70)) {
                         marginEnd = dip(15)
                     }
 
@@ -52,9 +53,7 @@ class AccountFragmentUI<T> : AnkoComponent<T> {
                         }
 
                         textView {
-                            textResource = R.string.verified_account
-                            textSize = 12f
-                            textColorResource = R.color.colorText
+                            textResource = R.string.lorem_ipsum
                         }
                     }
                 }

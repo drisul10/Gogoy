@@ -10,10 +10,7 @@ import androidx.core.view.MenuItemCompat
 import com.gogoy.R
 import com.gogoy.components.cart.CartActivity
 import com.gogoy.components.main.MainActivity
-import com.gogoy.utils.Prefs
-import com.gogoy.utils.invisible
-import com.gogoy.utils.replaceFragmentInActivity
-import com.gogoy.utils.visible
+import com.gogoy.utils.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -23,33 +20,21 @@ class ItemActivity : AppCompatActivity() {
     private val ui = ItemUI()
     private lateinit var itemId: String
     private lateinit var itemName: String
-    private lateinit var itemOwner: String
-    private var itemPrice: Int = 0
-    private var itemBadge: Int = R.drawable.default_image
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //set UI
         ui.setContentView(this)
 
         //get intent
-        itemId = intent.getStringExtra("ID")
-        itemName = intent.getStringExtra("NAME")
-        itemOwner = intent.getStringExtra("OWNER")
-        itemPrice = intent.getIntExtra("PRICE", 0)
-        itemBadge = intent.getIntExtra("BADGE", R.drawable.default_image)
+        itemId = intent.getStringExtra(Constant.UP_ID)
+        itemName = intent.getStringExtra(Constant.UP_ITEM_NAME)
 
         //call toolbar
         setToolbar(itemName)
 
         //create object fragment and pass data via bundle
         val bundle = Bundle()
-        bundle.putString("ID", itemId)
-        bundle.putString("NAME", itemName)
-        bundle.putString("OWNER", itemOwner)
-        bundle.putInt("PRICE", itemPrice)
-        bundle.putInt("BADGE", itemBadge)
+        bundle.putString(Constant.UP_ID, itemId)
 
         val fragmentObj = ItemFragment.newInstance()
         fragmentObj.arguments = bundle
@@ -60,7 +45,7 @@ class ItemActivity : AppCompatActivity() {
             replaceFragmentInActivity(it, R.id.fl_main_content)
         }
 
-        itemPresenter = ItemPresenter(itemFragment)
+        itemPresenter = ItemPresenter(itemFragment, applicationContext)
     }
 
     //set actionbar
@@ -76,13 +61,19 @@ class ItemActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val activityOrigin: String = intent.getStringExtra("ACTIVITY_ORIGIN")
+        if (!(intent.getStringExtra(Constant.ACTIVITY_BEFORE).isNullOrEmpty())) {
+            val activityBefore: String = intent.getStringExtra(Constant.ACTIVITY_BEFORE)
 
-        when (activityOrigin) {
-            "MAIN" -> startActivity(intentFor<MainActivity>().clearTask().newTask())
-            "CART" -> startActivity(intentFor<MainActivity>().clearTask().newTask())
+            when (activityBefore) {
+                Constant.ACTIVITY_MAIN -> startActivity(intentFor<MainActivity>())
+                Constant.ACTIVITY_CART -> startActivity(intentFor<MainActivity>().clearTask().newTask())
+                Constant.ACTIVITY_CART_BACK -> startActivity(intentFor<CartActivity>().clearTask().newTask())
+                Constant.ACTIVITY_ITEM -> super.onBackPressed()
+                else -> startActivity(intentFor<MainActivity>().clearTask().newTask())
+            }
+        } else {
+            startActivity(intentFor<MainActivity>().clearTask().newTask())
         }
-
         overridePendingTransition(R.anim.left_in, R.anim.right_out)
     }
 
@@ -98,10 +89,10 @@ class ItemActivity : AppCompatActivity() {
         val layoutCountItemCart = MenuItemCompat.getActionView(menuCart) as RelativeLayout
         val tvCountItemCart = layoutCountItemCart.findViewById<TextView>(R.id.tv_total_item_cart)
 
-        val prefs = Prefs(this)
+        val prefs = SharedPref(this)
 
         //set state tvCountItemCart
-        tvCountItemCart.text = (prefs.getPref().size).toString()
+        tvCountItemCart.text = (prefs.cartGetItems().size).toString()
         tvCountItemCart.visible()
 
         if (tvCountItemCart.text == "0") tvCountItemCart.invisible()
@@ -109,12 +100,9 @@ class ItemActivity : AppCompatActivity() {
         //when click icon cart
         layoutCountItemCart.onClick {
             startActivity<CartActivity>(
-                "ACTIVITY_ORIGIN" to "ITEM",
-                "ID" to itemId,
-                "NAME" to itemName,
-                "PRICE" to itemPrice,
-                "OWNER" to itemOwner,
-                "BADGE" to itemBadge
+                Constant.ACTIVITY_BEFORE to Constant.ACTIVITY_ITEM,
+                Constant.UP_ID to itemId,
+                Constant.UP_ITEM_NAME to itemName
             )
             overridePendingTransition(R.anim.right_in, R.anim.left_out)
         }

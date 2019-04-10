@@ -4,10 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.Gravity
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,8 +24,9 @@ import org.jetbrains.anko.support.v4.viewPager
 class ItemFragmentUI<T> : AnkoComponent<T> {
 
     lateinit var rvItemRelated: RecyclerView
-    lateinit var tabLayout: TabLayout
-    lateinit var vpTab: ViewPager
+    private lateinit var tabLayout: TabLayout
+    private lateinit var vpTab: ViewPager
+    lateinit var pbItemsRelated: ProgressBar
     lateinit var tvItemName: TextView
     lateinit var tvItemOwner: TextView
     lateinit var tvItemPrice: TextView
@@ -257,6 +255,12 @@ class ItemFragmentUI<T> : AnkoComponent<T> {
                         lparams(width = matchParent, height = wrapContent) {
                             topMargin = dip(10)
                             bottomMargin = dip(20)
+                        }
+
+                        pbItemsRelated = progressBar {
+                            id = R.id.pb_items_related
+                        }.lparams {
+                            centerInParent()
                         }
 
                         rvItemRelated = recyclerView {

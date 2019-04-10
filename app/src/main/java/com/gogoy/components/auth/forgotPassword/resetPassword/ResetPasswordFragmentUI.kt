@@ -1,23 +1,21 @@
-package com.gogoy.components.auth.resetpassword
+package com.gogoy.components.auth.forgotPassword.resetPassword
 
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
 import android.widget.Button
-import android.widget.EditText
+import androidx.fragment.app.Fragment
 import com.gogoy.R
 import org.jetbrains.anko.*
 
-class ResetPasswordUI : AnkoComponent<ResetPasswordActivity> {
+class ResetPasswordFragmentUI<T> : AnkoComponent<T> {
 
-    lateinit var etPassword: EditText
-    lateinit var etConfirmPassword: EditText
     lateinit var btnProcess: Button
 
-    override fun createView(ui: AnkoContext<ResetPasswordActivity>) = with(ui) {
-        linearLayout {
+    override fun createView(ui: AnkoContext<T>) = with(ui) {
+        relativeLayout {
             lparams(width = matchParent, height = matchParent)
-            id = R.id.ll_root
+            id = R.id.rl_root
             gravity = Gravity.CENTER
             backgroundColorResource = R.color.white
 
@@ -41,7 +39,8 @@ class ResetPasswordUI : AnkoComponent<ResetPasswordActivity> {
                         bottomMargin = dip(10)
                     }
 
-                    etPassword = editText {
+                    editText {
+                        id = R.id.et_password
                         padding = dip(15)
                         inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                         textSize = 16f
@@ -71,7 +70,8 @@ class ResetPasswordUI : AnkoComponent<ResetPasswordActivity> {
                         bottomMargin = dip(10)
                     }
 
-                    etConfirmPassword = editText {
+                    editText {
+                        id = R.id.et_password_confirm
                         padding = dip(15)
                         inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                         textSize = 16f
@@ -96,6 +96,6 @@ class ResetPasswordUI : AnkoComponent<ResetPasswordActivity> {
     }
 
     companion object {
-        fun instance() = ResetPasswordUI()
+        fun instance() = ResetPasswordFragmentUI<Fragment>()
     }
 }

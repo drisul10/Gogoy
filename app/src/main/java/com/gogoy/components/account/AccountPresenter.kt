@@ -8,9 +8,14 @@ class AccountPresenter(private val view: AccountContract.View) : AccountContract
 
     override fun start() {
         loadMenu()
+        loadUserProfile()
     }
 
     override fun loadMenu() {
         view.showMenu()
+    }
+
+    override fun loadUserProfile() {
+        view.showUserProfile()
     }
 }

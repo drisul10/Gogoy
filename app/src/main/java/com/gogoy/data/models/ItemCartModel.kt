@@ -5,6 +5,6 @@ data class ItemCartModel(
     var name: String,
     var price: Int,
     var owner: String,
-    var badge: Int,
+    var badge: String,
     var totalPerItem: Int
 )

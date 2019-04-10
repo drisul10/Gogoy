@@ -6,6 +6,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 
 class VolleySingleton : Application() {
+
     private val requestQueue: RequestQueue? = null
         get() {
             if (field == null) {

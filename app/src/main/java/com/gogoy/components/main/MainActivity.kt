@@ -18,7 +18,7 @@ import androidx.core.view.MenuItemCompat
 import com.gogoy.R
 import com.gogoy.components.account.AccountActivity
 import com.gogoy.components.cart.CartActivity
-import com.gogoy.utils.Prefs
+import com.gogoy.utils.SharedPref
 import com.gogoy.utils.invisible
 import com.gogoy.utils.replaceFragmentInActivity
 import com.gogoy.utils.visible
@@ -29,12 +29,13 @@ import org.jetbrains.anko.startActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainPresenter: MainPresenter
+    private val ui = MainUI.instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //set UI
-        MainUI().setContentView(this)
+        ui.setContentView(this)
 
         //set default fragment
         val mainFragment = supportFragmentManager
@@ -55,10 +56,10 @@ class MainActivity : AppCompatActivity() {
         val layoutCountItemCart = MenuItemCompat.getActionView(menuCart) as RelativeLayout
         val tvCountItemCart = layoutCountItemCart.findViewById<TextView>(R.id.tv_total_item_cart)
 
-        val prefs = Prefs(this)
+        val prefs = SharedPref(this)
 
         //set state tvCountItemCart
-        tvCountItemCart.text = (prefs.getPref().size).toString()
+        tvCountItemCart.text = (prefs.cartGetItems().size).toString()
         tvCountItemCart.visible()
 
         if (tvCountItemCart.text == "0") tvCountItemCart.invisible()

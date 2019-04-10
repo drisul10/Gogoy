@@ -1,28 +1,30 @@
 <resources>
-    <string name="app_name">Kang Gogoy</string>
+    <string name="app_name">Gondes.id</string>
     <string name="account">Akun</string>
     <string name="account_settings">Pengaturan Akun</string>
     <string name="activate">Aktifkan</string>
+    <string name="all_promo_komoditi">Semua Promo Komoditi</string>
+    <string name="all_promo_sayur">Semua Promo Sayur</string>
     <string name="best_seller">Terlaris</string>
     <string name="buy">Beli</string>
     <string name="cancel">Batalkan</string>
-    <string name="cart">Cart</string>
+    <string name="cart">Keranjang Belanja</string>
     <string name="category">Kategori</string>
-    <string name="checkout">Checkout</string>
     <string name="confirm">Konfirmasi</string>
-    <string name="confirm_dialog_start">Apakah yakin ingin menghapus</string>
-    <string name="confirm_dialog_end">dari keranjang</string>
+    <string name="cost_detail">Rincian Biaya</string>
     <string name="del">Hapus</string>
-    <string name="desc">Deskripsi</string>
-    <string name="done">Selesai</string>
+    <string name="display_name">Nama Tampilan</string>
     <string name="dont_have_account">Belum memiliki akun?</string>
+    <string name="edit_profile">Edit Profil</string>
     <string name="email">Email</string>
     <string name="email_addr">Email Address</string>
+    <string name="error_custom">Terjadi kesalahan. ERROR: %1$s</string>
     <string name="error_unknown">Unknown Error</string>
     <string name="exit">Keluar</string>
     <string name="exit_message">Apakah yakin ingin keluar dari aplikasi?</string>
     <string name="fill_code">Masukkan Kode</string>
     <string name="fill_email">Masukkan Email</string>
+    <string name="fill_display_name">Masukkan Nama Tampilan</string>
     <string name="fill_full_name">Masukkan Nama Lengkap</string>
     <string name="fill_mobile_number">Masukkan Nomor handphone</string>
     <string name="fill_paswd">Masukkan Kata sandi</string>
@@ -30,6 +32,7 @@
     <string name="fill_paswd_repeat">Ulangi kata sandi</string>
     <string name="find_bengkel">Cari bengkel terdekat</string>
     <string name="find_bengkel_location">Cari lokasi bengkel</string>
+    <string name="form_must_fill">Form harus diisi</string>
     <string name="full_name">Nama Lengkap</string>
     <string name="forgot_paswd">Lupa password?</string>
     <string name="google_maps_key">AIzaSyCyMOWKVukxQvutlZ3TOtf-6o-5SAVBPxY</string>
@@ -37,33 +40,38 @@
     <string name="gps_enabled_message">Aplikasi membutuhkan lokasi device. Silahkan aktifkan pengaturan lokasi terlebih
         dahulu untuk melanjutkan
     </string>
-    <string name="info">Informasi</string>
-    <string name="loading">Sedang memproses...</string>
-    <string name="login">Masuk</string>
-    <string name="logout">Keluar</string>
+    <string name="internet_problem">Terjadi masalah dengan sambungan Internet</string>
+    <string name="loading">Sedang memproses…</string>
     <string name="location_send">Lokasi pengiriman</string>
+    <string name="login">Masuk</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
     <string name="mobile_number">Nomor handphone</string>
     <string name="num_nil">0</string>
     <string name="paswd">Password</string>
     <string name="paswd_new">Password baru</string>
     <string name="paswd_repeat">Ulangi password</string>
+    <string name="pay">Bayar</string>
+    <string name="payment_method">Metode Pembayaran</string>
     <string name="process">Proses</string>
-    <string name="promo">Promo</string>
+    <string name="promo_komoditi">Promo Komoditi</string>
+    <string name="promo_sayur">Promo Sayur</string>
     <string name="register">Register</string>
     <string name="register_now">Daftar sekarang</string>
     <string name="related_item">Item terkait</string>
     <string name="resend_code">Kirim ulang kode</string>
     <string name="reset_password">Reset password</string>
-    <string name="send">Kirim</string>
+    <string name="send_address">Alamat Pengiriman</string>
+    <string name="set_payment">Atur Pembayaran</string>
+    <string name="shopping_list">Daftar Belanja</string>
     <string name="sign_min">-</string>
+    <string name="sign_per">/</string>
     <string name="sign_plus">+</string>
-    <string name="submit">Proses</string>
     <string name="trucuk">Trucuk</string>
+    <string name="update">Perbarui</string>
     <string name="validate">Validasi</string>
-    <string name="verivy_code_message">Kami telah mengirimkan kode validasi ke alamat %1$s, buka email Anda kemudian
+    <string name="verify_code_message">Kami telah mengirimkan kode validasi ke alamat %1$s, buka email Anda kemudian
         masukkan kode tersebut.
     </string>
-    <string name="verified_account">Akun terverifikasi</string>
     <string name="view_all">Lihat semua</string>
-    <string name="dummy_people_name">Osas</string>
+    <!--UPPERCASE-->
 </resources>

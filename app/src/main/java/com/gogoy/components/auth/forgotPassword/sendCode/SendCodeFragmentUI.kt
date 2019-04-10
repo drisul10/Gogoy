@@ -1,21 +1,20 @@
-package com.gogoy.components.auth.resetpassword
+package com.gogoy.components.auth.forgotPassword.sendCode
 
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
 import android.widget.Button
-import android.widget.EditText
+import androidx.fragment.app.Fragment
 import com.gogoy.R
 import org.jetbrains.anko.*
 
-class SendCodeUI : AnkoComponent<SendCodeActivity> {
+class SendCodeFragmentUI<T> : AnkoComponent<T> {
 
-    lateinit var etEmail: EditText
     lateinit var btnReset: Button
 
-    override fun createView(ui: AnkoContext<SendCodeActivity>) = with(ui) {
-        linearLayout {
-            id = R.id.ll_root
+    override fun createView(ui: AnkoContext<T>) = with(ui) {
+        relativeLayout {
+            id = R.id.rl_root
             lparams(width = matchParent, height = matchParent)
             gravity = Gravity.CENTER
             backgroundColorResource = R.color.white
@@ -39,7 +38,8 @@ class SendCodeUI : AnkoComponent<SendCodeActivity> {
                         bottomMargin = dip(10)
                     }
 
-                    etEmail = editText {
+                    editText {
+                        id = R.id.et_email
                         padding = dip(15)
                         inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                         textSize = 16f
@@ -64,6 +64,6 @@ class SendCodeUI : AnkoComponent<SendCodeActivity> {
     }
 
     companion object {
-        fun instance() = SendCodeUI()
+        fun instance() = SendCodeFragmentUI<Fragment>()
     }
 }
